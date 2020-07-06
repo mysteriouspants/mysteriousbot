@@ -1,0 +1,16 @@
+[[handlers]]
+type = "RoleWizard"
+allowed_role_grants = [ "political animal" ]
+allowed_role_revoke = [ "political animal" ]
+
+[[handlers]]
+type = "AckMessage"
+deny_channels = [ "never_ack_here" ]
+
+[[handlers]]
+type = "WordWatcher"
+watched_words = [ 
+  "trump", "clinton", "republican", "democrat", "boris johnson", "bojo",
+  "orange tornado", "orange man", "biden", "sleepy joe", "sleepy eyes joe"
+]
+suggest_channel = "politics"
