@@ -47,6 +47,49 @@ seldom change).
 If you're, for some reason, doing this yourself, these are mysteriouspants'
 notes on the matter. They may be of some help for you!
 
+Prepare the server
+
+```sh
+ssh mysteriouspants.com:
+    # create user
+    sudo adduser --disabled-password cmdr
+    # enable ssh for this user - this is how we rsync new releases up
+    sudo mkdir -p ~cmdr/.ssh
+    sudo cp authorized_keys  ~cmdr/.ssh/authorized_keys
+    sudo chown cmdr:cmdr ~cmdr/.ssh/authorized_keys
+    sudo vim /etc/systemd/system/cmdr.service
+```
+
+The service file ought to look like this:
+
+```
+[Unit]
+Description=iDevGames Discord Chat Bot
+After=network.target
+
+[Service]
+type=simple
+User=cmdr
+WorkingDirectory=/home/cmdr
+Environment="DISCORD_TOKEN=YOUR DISCORD TOKEN HERE"
+ExecStart=/home/cmdr/cmdr
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Finally, run `deploy.sh` locally to build a release build and rsync the results
+up, and kick the service on. You should mark the service to start on boot as
+well. Because wild reboots happen.
+
+```sh
+local:
+    ./deploy.sh
+ssh mysteriouspants.com:
+    sudo systemctl enable cmdr
+```
+
 ## License
 
 We want you to be able to use this software regardless of who you may be, what
