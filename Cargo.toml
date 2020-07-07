@@ -1,5 +1,5 @@
 [package]
-name = "cmdr"
+name = "mysteriousbot"
 version = "0.1.0"
 authors = ["Christopher R. Miller <xpm@mysteriouspants.com>"]
 edition = "2018"

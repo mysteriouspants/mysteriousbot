@@ -1,4 +1,4 @@
-# Cmd-R
+# mysteriousbot
 
 A bot that sits in the [idevgames](https://www.idevgames.com/) Discord server
 and keeps the peace.
@@ -22,20 +22,19 @@ Running the bot yourself requires a few setup steps.
    can add your bot to. If you do not see any servers, either you have already
    added the bot or you don't have the permission to add it to the server you
    want to add it to.
+1. Now that you have the bot set up in Discord's API, you can run the bot
+   locally, which connects to Discord's servers. Running the bot requires a
+   *token* which is issued by the Discord server at the app page from before,
+   under the bot page. Keep this token safe, it gives anyone who has it the
+   ability to connect as your bot!
 
-Now that you have the bot set up in Discord's API, you can run the bot locally,
-which connects to Discord's servers. Running the bot requires a *token* which
-is issued by the Discord server at the app page from before, under the bot page.
-Keep this token safe, it gives anyone who has it the ability to connect as your
-bot!
-
-```
-# Linux and Mac
-DISCORD_TOKEN='' cargo run
-# Windows PowerShell
-$env:DISCORD_TOKEN = ''
-cargo run
-```
+       ```
+       # Linux and Mac
+       DISCORD_TOKEN='' cargo run
+       # Windows PowerShell
+       $env:DISCORD_TOKEN = ''
+       cargo run
+       ```
 
 ## Deploying
 
@@ -52,12 +51,12 @@ Prepare the server
 ```sh
 ssh mysteriouspants.com:
     # create user
-    sudo adduser --disabled-password cmdr
+    sudo adduser --disabled-password mysteriousbot
     # enable ssh for this user - this is how we rsync new releases up
-    sudo mkdir -p ~cmdr/.ssh
-    sudo cp authorized_keys  ~cmdr/.ssh/authorized_keys
-    sudo chown cmdr:cmdr ~cmdr/.ssh/authorized_keys
-    sudo vim /etc/systemd/system/cmdr.service
+    sudo mkdir -p ~mysteriousbot/.ssh
+    sudo cp authorized_keys  ~mysteriousbot/.ssh/authorized_keys
+    sudo chown mysteriousbot:mysteriousbot ~mysteriousbot/.ssh/authorized_keys
+    sudo vim /etc/systemd/system/mysteriousbot.service
 ```
 
 The service file ought to look like this:
@@ -70,9 +69,9 @@ After=network.target
 [Service]
 type=simple
 User=cmdr
-WorkingDirectory=/home/cmdr
+WorkingDirectory=/home/mysteriousbot
 Environment="DISCORD_TOKEN=YOUR DISCORD TOKEN HERE"
-ExecStart=/home/cmdr/cmdr
+ExecStart=/home/mysteriousbot/mysteriousbot
 Restart=on-failure
 
 [Install]
@@ -87,7 +86,7 @@ well. Because wild reboots happen.
 local:
     ./deploy.sh
 ssh mysteriouspants.com:
-    sudo systemctl enable cmdr
+    sudo systemctl enable mysteriousbot
 ```
 
 ## License
