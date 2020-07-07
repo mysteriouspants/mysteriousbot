@@ -28,13 +28,11 @@ Running the bot yourself requires a few setup steps.
    under the bot page. Keep this token safe, it gives anyone who has it the
    ability to connect as your bot!
 
-       ```
        # Linux and Mac
        DISCORD_TOKEN='' cargo run
        # Windows PowerShell
        $env:DISCORD_TOKEN = ''
        cargo run
-       ```
 
 ## Deploying
 
@@ -54,7 +52,7 @@ ssh mysteriouspants.com:
     sudo adduser --disabled-password mysteriousbot
     # enable ssh for this user - this is how we rsync new releases up
     sudo mkdir -p ~mysteriousbot/.ssh
-    sudo cp authorized_keys  ~mysteriousbot/.ssh/authorized_keys
+    sudo cp ~/.ssh/authorized_keys  ~mysteriousbot/.ssh/authorized_keys
     sudo chown mysteriousbot:mysteriousbot ~mysteriousbot/.ssh/authorized_keys
     sudo vim /etc/systemd/system/mysteriousbot.service
 ```

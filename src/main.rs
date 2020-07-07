@@ -102,8 +102,8 @@ fn array_to_string_array(array: &Vec<Value>) -> Vec<String> {
 fn main() {
     let token = &env::var("DISCORD_TOKEN")
         .expect("DISCORD_TOKEN environment variable is unset, exiting");
-    let config_file = &env::var("CMDR_CONFIG")
-        .unwrap_or("./config/cmdr.toml".to_owned());
+    let config_file = &env::var("MYSTERIOUSBOT_CONFIG")
+        .unwrap_or("./config/mysteriousbot.toml".to_owned());
     let handler = Handler {
         message_handlers: parse_handlers(
             std::fs::read_to_string(config_file).unwrap()

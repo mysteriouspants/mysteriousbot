@@ -140,16 +140,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cmdr"
-version = "0.1.0"
-dependencies = [
- "lazy_static",
- "regex",
- "serenity",
- "toml",
-]
-
-[[package]]
 name = "command_attr"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -614,6 +604,16 @@ dependencies = [
  "net2",
  "winapi 0.2.8",
  "ws2_32-sys",
+]
+
+[[package]]
+name = "mysteriousbot"
+version = "0.1.0"
+dependencies = [
+ "lazy_static",
+ "regex",
+ "serenity",
+ "toml",
 ]
 
 [[package]]
