@@ -1,4 +1,4 @@
-use crate::cmdr_message_handler::CmdrMessageHandler;
+use crate::mysterious_message_handler::MysteriousMessageHandler;
 use serenity::model::channel::Message;
 use serenity::model::id::ChannelId;
 use serenity::prelude::Context;
@@ -17,7 +17,7 @@ impl AckMessageHandler {
     }
 }
 
-impl CmdrMessageHandler for AckMessageHandler {
+impl MysteriousMessageHandler for AckMessageHandler {
     fn is_exclusive(&self) -> bool {
         false
     }

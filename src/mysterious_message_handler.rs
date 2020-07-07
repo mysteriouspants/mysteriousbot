@@ -2,7 +2,7 @@ use serenity::model::channel::Message;
 use serenity::prelude::Context;
 
 
-pub trait CmdrMessageHandler : Send + Sync {
+pub trait MysteriousMessageHandler : Send + Sync {
     /// Tells whether this event handler is "exclusive," which is to say that,
     /// when an event matches this handler, and is handled by this handler,
     /// ought the event continue to propagate through the handler chain, or

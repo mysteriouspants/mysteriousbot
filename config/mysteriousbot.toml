@@ -13,4 +13,5 @@ watched_words = [
   "trump", "clinton", "republican", "democrat", "boris johnson", "bojo",
   "orange tornado", "orange man", "biden", "sleepy joe", "sleepy eyes joe"
 ]
+deny_channels = [ "politics" ]
 suggest_channel = "politics"

@@ -1,10 +1,10 @@
 mod ack_message_handler;
-mod cmdr_message_handler;
+mod mysterious_message_handler;
 mod role_wizard;
 mod word_watcher;
 
 use crate::ack_message_handler::AckMessageHandler;
-use crate::cmdr_message_handler::CmdrMessageHandler;
+use crate::mysterious_message_handler::MysteriousMessageHandler;
 use crate::role_wizard::RoleWizard;
 use crate::word_watcher::WordWatcher;
 use serenity::client::Client;
@@ -17,7 +17,7 @@ use toml::value::Table;
 
 
 struct Handler {
-    message_handlers: Vec<Box<dyn CmdrMessageHandler>>,
+    message_handlers: Vec<Box<dyn MysteriousMessageHandler>>,
 }
 
 impl EventHandler for Handler {
@@ -40,10 +40,10 @@ impl EventHandler for Handler {
 
 // this code is kinda unwrappy but I think that's okay because dying in
 // initialization is sorta expected on bad config, right?
-fn parse_handlers(raw_toml: String) -> Vec<Box<dyn CmdrMessageHandler>> {
+fn parse_handlers(raw_toml: String) -> Vec<Box<dyn MysteriousMessageHandler>> {
     let toml = raw_toml.parse::<Value>().unwrap();
     let handlers = toml.as_table().unwrap().get("handlers").unwrap().as_array().unwrap();
-    let mut parsed_handlers: Vec<Box<dyn CmdrMessageHandler>> = Vec::new();
+    let mut parsed_handlers: Vec<Box<dyn MysteriousMessageHandler>> = Vec::new();
 
     for handler_value in handlers {
         let handler_config = handler_value.as_table().unwrap();
@@ -89,10 +89,13 @@ fn word_watcher_handler_from_config(config: &Table) -> WordWatcher {
     let watched_words: Vec<String> = array_to_string_array(
         config.get("watched_words").unwrap().as_array().unwrap()
     );
+    let deny_channels: Vec<String> = array_to_string_array(
+        config.get("deny_channels").unwrap().as_array().unwrap()
+    );
     let suggest_channel = config.get("suggest_channel")
         .unwrap().as_str().unwrap().to_owned();
 
-    WordWatcher::new(watched_words, suggest_channel)
+    WordWatcher::new(watched_words, deny_channels, suggest_channel)
 }
 
 fn array_to_string_array(array: &Vec<Value>) -> Vec<String> {

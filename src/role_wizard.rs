@@ -4,7 +4,7 @@
 //! public roles on the whims of the requester. Tireless and of infinite
 //! patience, he's impossible to catch flustered, and he never sleeps.
 
-use crate::cmdr_message_handler::CmdrMessageHandler;
+use crate::mysterious_message_handler::MysteriousMessageHandler;
 use lazy_static::lazy_static;
 use regex::Regex;
 use serenity::model::channel::Message;
@@ -48,7 +48,7 @@ impl RoleWizard {
     }
 }
 
-impl CmdrMessageHandler for RoleWizard {
+impl MysteriousMessageHandler for RoleWizard {
     fn is_exclusive(&self) -> bool {
         true
     }

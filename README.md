@@ -36,7 +36,7 @@ Running the bot yourself requires a few setup steps.
 
 ## Deploying
 
-Put the build program on a machine and run it. If you're patching it for
+Put the built program on a machine and run it. If you're patching it for
 iDevGames use, then the process of deploying is very complicated: poke
 mysteriouspants until he does it (he hasn't set up automation because things
 seldom change).
