@@ -7,6 +7,7 @@ use crate::ack_message_handler::AckMessageHandler;
 use crate::mysterious_message_handler::MysteriousMessageHandler;
 use crate::role_wizard::RoleWizard;
 use crate::word_watcher::WordWatcher;
+use dotenv::dotenv;
 use serenity::client::Client;
 use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
@@ -89,13 +90,18 @@ fn word_watcher_handler_from_config(config: &Table) -> WordWatcher {
     let watched_words: Vec<String> = array_to_string_array(
         config.get("watched_words").unwrap().as_array().unwrap()
     );
+    let allow_users_by_tag: Vec<String> = array_to_string_array(
+        config.get("allow_users_by_tag").unwrap().as_array().unwrap()
+    );
     let deny_channels: Vec<String> = array_to_string_array(
         config.get("deny_channels").unwrap().as_array().unwrap()
     );
     let suggest_channel = config.get("suggest_channel")
         .unwrap().as_str().unwrap().to_owned();
 
-    WordWatcher::new(watched_words, deny_channels, suggest_channel)
+    WordWatcher::new(
+        watched_words, allow_users_by_tag, deny_channels, suggest_channel
+    )
 }
 
 fn array_to_string_array(array: &Vec<Value>) -> Vec<String> {
@@ -103,6 +109,7 @@ fn array_to_string_array(array: &Vec<Value>) -> Vec<String> {
 }
 
 fn main() {
+    dotenv().ok(); // enable use of .env files
     let token = &env::var("DISCORD_TOKEN")
         .expect("DISCORD_TOKEN environment variable is unset, exiting");
     let config_file = &env::var("MYSTERIOUSBOT_CONFIG")

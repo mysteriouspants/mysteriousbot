@@ -13,5 +13,7 @@ watched_words = [
   "trump", "clinton", "republican", "democrat", "boris johnson", "bojo",
   "orange tornado", "orange man", "biden", "sleepy joe", "sleepy eyes joe"
 ]
+allow_users_by_tag = [ "Command-R#3084" ] # people on the irc bridge cannot join
+                                          # #politics, so don't nudge them to
 deny_channels = [ "politics" ]
 suggest_channel = "politics"
