@@ -24,11 +24,22 @@ struct Handler {
 impl EventHandler for Handler {
     fn message(&self, ctx: Context, msg: Message) {
         for handler in &self.message_handlers {
-            if handler.should_handle(&ctx, &msg) {
-                handler.on_message(&ctx, &msg);
+            match handler.should_handle(&ctx, &msg) {
+                Ok(true) => {
+                    match handler.on_message(&ctx, &msg) {
+                        Ok(()) => {},
+                        Err(err) => {
+                            println!("handler {}", err.as_ref());
+                        }
+                    }
 
-                if handler.is_exclusive() {
-                    return;
+                    if handler.is_exclusive() {
+                        return;
+                    }
+                },
+                Ok(false) => {},
+                Err(err) => {
+                    println!("Handler {}", err.as_ref());
                 }
             }
         }

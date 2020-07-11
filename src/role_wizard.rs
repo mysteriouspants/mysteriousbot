@@ -4,7 +4,7 @@
 //! public roles on the whims of the requester. Tireless and of infinite
 //! patience, he's impossible to catch flustered, and he never sleeps.
 
-use crate::mysterious_message_handler::MysteriousMessageHandler;
+use crate::mysterious_message_handler::{MMHResult, MysteriousMessageHandler};
 use lazy_static::lazy_static;
 use regex::Regex;
 use serenity::model::channel::Message;
@@ -14,9 +14,9 @@ use serenity::prelude::Context;
 
 lazy_static! {
     // unwrap is okay here because we've already validated the regex
-    /// The way this regex works is that it destructures the input to two groups
+    /// The way this regex works is that it structures the input to two groups
     /// group 1: the command (either grant or revoke)
-    /// gropu 2: the role
+    /// group 2: the role
     static ref ROLE_REGEX: Regex = Regex::new(
         "!role (grant|revoke) (.*)"
     ).unwrap();
@@ -53,11 +53,11 @@ impl MysteriousMessageHandler for RoleWizard {
         true
     }
 
-    fn should_handle(&self, _ctx: &Context, msg: &Message) -> bool {
-        msg.content.to_lowercase().starts_with("!role")
+    fn should_handle(&self, _ctx: &Context, msg: &Message) -> MMHResult<bool> {
+        Ok(msg.content.to_lowercase().starts_with("!role"))
     }
 
-    fn on_message(&self, ctx: &Context, msg: &Message) {
+    fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
         let content = msg.content.to_lowercase();
 
         if let Some(captures) = ROLE_REGEX.captures(&content) {
@@ -76,9 +76,9 @@ impl MysteriousMessageHandler for RoleWizard {
                 None => {
                     msg.channel_id.say(
                         &ctx.http, "No such role by that name, bud."
-                    );
+                    )?;
 
-                    return;
+                    return Ok(());
                 }
             };
 
@@ -92,9 +92,9 @@ impl MysteriousMessageHandler for RoleWizard {
                 msg.channel_id.say(
                     &ctx.http,
                     "I'm sorry, I cannot manage that role"
-                );
+                )?;
 
-                return;
+                return Ok(());
             }
 
             let mut member = msg.member(&ctx.cache).unwrap();
@@ -109,21 +109,23 @@ impl MysteriousMessageHandler for RoleWizard {
                     msg.channel_id.say(
                         &ctx.http,
                         "you got it."
-                    );
+                    )?;
                 },
                 Err(e) => {
                     msg.channel_id.say(
                         &ctx.http, "there was a problem modifying your roles."
-                    );
-                    println!("{:?}", e)
+                    )?;
+                    println!("Could not modify roles with error {:?}", e)
                 }
             }
         } else {
             msg.channel_id.say(
                 &ctx.http,
                 "The format for this command is !role <grant|revoke> <role name>"
-            );
+            )?;
         }
+
+        Ok(())
     }
 }
 

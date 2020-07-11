@@ -1,4 +1,4 @@
-use crate::mysterious_message_handler::MysteriousMessageHandler;
+use crate::mysterious_message_handler::{MMHResult, MysteriousMessageHandler};
 use serenity::model::channel::Message;
 use serenity::model::id::ChannelId;
 use serenity::prelude::Context;
@@ -39,7 +39,7 @@ impl MysteriousMessageHandler for WordWatcher {
         false
     }
 
-    fn should_handle(&self, ctx: &Context, msg: &Message) -> bool {
+    fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool> {
         // if this is in a channel that is allowed to say these words without
         // a nudge we shouldn't use this handler
         if let Some(guild_lock) = msg.guild(&ctx.cache) {
@@ -51,34 +51,36 @@ impl MysteriousMessageHandler for WordWatcher {
                 ).collect();
 
             if deny_channel_ids.contains(&Some(msg.channel_id)) {
-                return false;
+                return Ok(false);
             }
         }
 
         // if this was said by a user that is allowed to say these words without
         // a nudge we shouldn't use this handler
         if self.allow_users_by_tag.contains(&msg.author.tag().to_lowercase()) {
-            return false;
+            return Ok(false);
         }
 
         // if we find a word that should be nudged we should use this handler
         let haystack = msg.content.to_lowercase();
         for watched_word in &self.watched_words {
             if haystack.contains(watched_word) {
-                return true;
+                return Ok(true);
             }
         }
 
-        false
+        Ok(false)
     }
 
-    fn on_message(&self, ctx: &Context, msg: &Message) {
+    fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()>{
         msg.channel_id.say(
             &ctx.http,
             format!(
                 "Hey, that sounds like it may be best taken to #{}.",
                 self.suggest_channel
             )
-        );
+        )?;
+
+        Ok(())
     }
 }

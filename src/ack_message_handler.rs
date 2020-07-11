@@ -1,4 +1,4 @@
-use crate::mysterious_message_handler::MysteriousMessageHandler;
+use crate::mysterious_message_handler::{MMHResult, MysteriousMessageHandler};
 use serenity::model::channel::Message;
 use serenity::model::id::ChannelId;
 use serenity::prelude::Context;
@@ -22,7 +22,7 @@ impl MysteriousMessageHandler for AckMessageHandler {
         false
     }
 
-    fn should_handle(&self, ctx: &Context, msg: &Message) -> bool {
+    fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool> {
         if let Some(guild_lock) = msg.guild(&ctx.cache) {
             let guild = guild_lock.read();
             let deny_channel_ids: Vec<Option<ChannelId>> = 
@@ -32,7 +32,7 @@ impl MysteriousMessageHandler for AckMessageHandler {
                 ).collect();
 
             if deny_channel_ids.contains(&Some(msg.channel_id)) {
-                return false;
+                return Ok(false);
             }
         }
 
@@ -40,16 +40,17 @@ impl MysteriousMessageHandler for AckMessageHandler {
             let user_id = current_user.id;
             
             if msg.mentions_user_id(user_id) {
-                return true;
+                return Ok(true);
             }
         }
 
         // just silently ignore any failures, I think that's fair for something
         // this trivial
-        false
+        Ok(false)
     }
 
-    fn on_message(&self, ctx: &Context, msg: &Message) {
-        msg.channel_id.say(&ctx.http, "I don't know about that");
+    fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
+        msg.channel_id.say(&ctx.http, "I don't know about that")?;
+        Ok(())
     }
 }
