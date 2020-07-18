@@ -43,6 +43,7 @@ impl MysteriousMessageHandler for AckMessageHandler {
 
     fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
         msg.channel_id.say(&ctx.http, "I don't know about that")?;
+        println!("Message:\n\t{}", msg.content);
         Ok(())
     }
 }

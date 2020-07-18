@@ -17,4 +17,8 @@ watched_words = [
 allow_users_by_tag = [ "Command-R#3084" ] # people on the irc bridge cannot join
                                           # #politics, so don't nudge them to
 deny_channels = [ "politics" ]
-suggest_message = "Hey, that sounds like it may be best taken to the #politics channel."
+suggest_message = """\
+Hey, that sounds like it may be best taken to the #politics channel. If you \
+don't see that channel, you can request it by @ messaging me with 'role grant \
+political animal'. If you change your mind I can revoke that role as well.
+"""

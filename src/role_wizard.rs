@@ -20,7 +20,7 @@ lazy_static! {
     /// group 1: the command (either grant or revoke)
     /// group 2: the role
     static ref ROLE_REGEX: Regex = Regex::new(
-        "!role (grant|revoke) (.*)"
+        "<@!\\d+> role (grant|revoke) (.*)"
     ).unwrap();
 }
 
@@ -55,8 +55,9 @@ impl MysteriousMessageHandler for RoleWizard {
         true
     }
 
-    fn should_handle(&self, _ctx: &Context, msg: &Message) -> MMHResult<bool> {
-        Ok(msg.content.to_lowercase().starts_with("!role"))
+    fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool> {
+        return Ok(msg.mentions_user_id(&ctx.cache.read().user.id)
+            && ROLE_REGEX.is_match(&msg.content.to_lowercase()));
     }
 
     fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
@@ -117,13 +118,13 @@ impl MysteriousMessageHandler for RoleWizard {
                     msg.channel_id.say(
                         &ctx.http, "there was a problem modifying your roles."
                     )?;
-                    println!("Could not modify roles with error {:?}", e)
+                    println!("Could not modify role {} with error {:?}", role, e)
                 }
             }
         } else {
             msg.channel_id.say(
                 &ctx.http,
-                "The format for this command is !role <grant|revoke> <role name>"
+                "The format for this command is role <grant|revoke> <role name>"
             )?;
         }
 
