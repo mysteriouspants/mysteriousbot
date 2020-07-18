@@ -4,7 +4,9 @@
 //! public roles on the whims of the requester. Tireless and of infinite
 //! patience, he's impossible to catch flustered, and he never sleeps.
 
-use crate::mysterious_message_handler::{MMHResult, MysteriousMessageHandler};
+use crate::mysterious_message_handler::{
+    MMHResult, MysteriousMessageHandler
+};
 use lazy_static::lazy_static;
 use regex::Regex;
 use serenity::model::channel::Message;

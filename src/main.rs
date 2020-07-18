@@ -27,7 +27,7 @@ impl EventHandler for Handler {
             match handler.should_handle(&ctx, &msg) {
                 Ok(true) => {
                     match handler.on_message(&ctx, &msg) {
-                        Ok(()) => {},
+                        Ok(_) => { },
                         Err(err) => {
                             println!("handler {}", err.as_ref());
                         }
@@ -62,11 +62,11 @@ fn parse_handlers(raw_toml: String) -> Vec<Box<dyn MysteriousMessageHandler>> {
         let handler_type = handler_config.get("type").unwrap().as_str().unwrap();
 
         match handler_type {
-            "RoleWizard" => parsed_handlers.push(Box::new(
-                role_wizard_from_config(&handler_config)
-            )),
             "AckMessage" => parsed_handlers.push(Box::new(
                 ack_message_handler_from_config(&handler_config)
+            )),
+            "RoleWizard" => parsed_handlers.push(Box::new(
+                role_wizard_from_config(&handler_config)
             )),
             "WordWatcher" => parsed_handlers.push(Box::new(
                 word_watcher_handler_from_config(&handler_config)
@@ -107,11 +107,11 @@ fn word_watcher_handler_from_config(config: &Table) -> WordWatcher {
     let deny_channels: Vec<String> = array_to_string_array(
         config.get("deny_channels").unwrap().as_array().unwrap()
     );
-    let suggest_channel = config.get("suggest_channel")
+    let suggest_message = config.get("suggest_message")
         .unwrap().as_str().unwrap().to_owned();
 
     WordWatcher::new(
-        watched_words, allow_users_by_tag, deny_channels, suggest_channel
+        watched_words, allow_users_by_tag, deny_channels, suggest_message
     )
 }
 

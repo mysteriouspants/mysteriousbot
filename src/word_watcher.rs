@@ -1,4 +1,6 @@
-use crate::mysterious_message_handler::{MMHResult, MysteriousMessageHandler};
+use crate::mysterious_message_handler::{
+    MMHResult, MysteriousMessageHandler
+};
 use serenity::model::channel::Message;
 use serenity::model::id::ChannelId;
 use serenity::prelude::Context;
@@ -13,14 +15,14 @@ pub struct WordWatcher {
     allow_users_by_tag: Vec<String>,
     /// Channels in which to allow the watched words.
     deny_channels: Vec<String>,
-    /// The channel the bot nudges the conversation toward.
-    suggest_channel: String,
+    /// The message to display on suggestion.
+    suggest_message: String,
 }
 
 impl WordWatcher {
     pub fn new(
         words: Vec<String>, allow_users: Vec<String>,
-        deny_channels: Vec<String>, suggest_channel: String
+        deny_channels: Vec<String>, suggest_message: String
     ) -> WordWatcher {
         let watched_words = words.iter()
             .map(|word| word.to_lowercase())
@@ -29,7 +31,7 @@ impl WordWatcher {
             .map(|word| word.to_lowercase())
             .collect();
         WordWatcher {
-            watched_words, allow_users_by_tag, deny_channels, suggest_channel
+            watched_words, allow_users_by_tag, deny_channels, suggest_message
         }
     }
 }
@@ -73,13 +75,7 @@ impl MysteriousMessageHandler for WordWatcher {
     }
 
     fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()>{
-        msg.channel_id.say(
-            &ctx.http,
-            format!(
-                "Hey, that sounds like it may be best taken to #{}.",
-                self.suggest_channel
-            )
-        )?;
+        msg.channel_id.say(&ctx.http, &self.suggest_message)?;
 
         Ok(())
     }

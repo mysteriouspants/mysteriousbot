@@ -1,4 +1,6 @@
-use crate::mysterious_message_handler::{MMHResult, MysteriousMessageHandler};
+use crate::mysterious_message_handler::{
+    MMHResult, MysteriousMessageHandler
+};
 use serenity::model::channel::Message;
 use serenity::model::id::ChannelId;
 use serenity::prelude::Context;
@@ -36,17 +38,7 @@ impl MysteriousMessageHandler for AckMessageHandler {
             }
         }
 
-        if let Ok(current_user) = ctx.http.get_current_user() {
-            let user_id = current_user.id;
-            
-            if msg.mentions_user_id(user_id) {
-                return Ok(true);
-            }
-        }
-
-        // just silently ignore any failures, I think that's fair for something
-        // this trivial
-        Ok(false)
+        return Ok(msg.mentions_user_id(ctx.cache.read().user.id));
     }
 
     fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
