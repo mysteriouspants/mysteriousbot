@@ -8,35 +8,35 @@ use serenity::prelude::Context;
 
 /// Handler which watches messages for specific words. When such a word is
 /// found, it directs the utterer to the suggested channel.
-pub struct WordWatcher {
+pub struct VerbalMoralityHandler {
     /// Words which get a nudge from the bot.
-    watched_words: Vec<String>,
+    bad_words: Vec<String>, // bad words, whatcha gonna do?
     /// Users who are allowed to say these words without a nudge.
     allow_users_by_tag: Vec<String>,
     /// Channels in which to allow the watched words.
     deny_channels: Vec<String>,
-    /// The message to display on suggestion.
-    suggest_message: String,
+    /// The message to display on infraction.
+    warning_message: String,
 }
 
-impl WordWatcher {
+impl VerbalMoralityHandler {
     pub fn new(
         words: Vec<String>, allow_users: Vec<String>,
-        deny_channels: Vec<String>, suggest_message: String
-    ) -> WordWatcher {
-        let watched_words = words.iter()
+        deny_channels: Vec<String>, warning_message: String
+    ) -> VerbalMoralityHandler {
+        let bad_words = words.iter()
             .map(|word| word.to_lowercase())
             .collect();
         let allow_users_by_tag = allow_users.iter()
             .map(|word| word.to_lowercase())
             .collect();
-        WordWatcher {
-            watched_words, allow_users_by_tag, deny_channels, suggest_message
+        VerbalMoralityHandler {
+            bad_words, allow_users_by_tag, deny_channels, warning_message
         }
     }
 }
 
-impl MysteriousMessageHandler for WordWatcher {
+impl MysteriousMessageHandler for VerbalMoralityHandler {
     fn is_exclusive(&self) -> bool {
         false
     }
@@ -65,7 +65,7 @@ impl MysteriousMessageHandler for WordWatcher {
 
         // if we find a word that should be nudged we should use this handler
         let haystack = msg.content.to_lowercase();
-        for watched_word in &self.watched_words {
+        for watched_word in &self.bad_words {
             if haystack.contains(watched_word) {
                 return Ok(true);
             }
@@ -74,8 +74,17 @@ impl MysteriousMessageHandler for WordWatcher {
         Ok(false)
     }
 
-    fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()>{
-        msg.channel_id.say(&ctx.http, &self.suggest_message)?;
+    fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
+        let user = match msg.author_nick(&ctx.http) {
+            Some(u) => u,
+            None => {
+                msg.author.name.to_owned()
+            }
+        };
+
+        let warning_message = self.warning_message
+            .replace("{{user}}", &user);
+        msg.channel_id.say(&ctx.http, &warning_message)?;
 
         Ok(())
     }

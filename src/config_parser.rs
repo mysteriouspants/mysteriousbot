@@ -1,7 +1,7 @@
 use crate::ack_message_handler::AckMessageHandler;
 use crate::mysterious_message_handler::MysteriousMessageHandler;
 use crate::role_wizard::RoleWizard;
-use crate::word_watcher::WordWatcher;
+use crate::verbal_morality_handler::VerbalMoralityHandler;
 use toml::Value;
 use toml::value::Table;
 
@@ -26,8 +26,8 @@ pub fn parse_handlers(
             "RoleWizard" => parsed_handlers.push(Box::new(
                 role_wizard_from_config(&handler_config)
             )),
-            "WordWatcher" => parsed_handlers.push(Box::new(
-                word_watcher_handler_from_config(&handler_config)
+            "VerbalMorality" => parsed_handlers.push(Box::new(
+                verbal_morality_handler_from_config(&handler_config)
             )),
             _ => { /* do nothing, i guess */ }
         };
@@ -55,9 +55,9 @@ fn ack_message_handler_from_config(config: &Table) -> AckMessageHandler {
     AckMessageHandler::new(deny_list)
 }
 
-fn word_watcher_handler_from_config(config: &Table) -> WordWatcher {
-    let watched_words: Vec<String> = array_to_string_array(
-        config.get("watched_words").unwrap().as_array().unwrap()
+fn verbal_morality_handler_from_config(config: &Table) -> VerbalMoralityHandler {
+    let bad_words: Vec<String> = array_to_string_array(
+        config.get("bad_words").unwrap().as_array().unwrap()
     );
     let allow_users_by_tag: Vec<String> = array_to_string_array(
         config.get("allow_users_by_tag").unwrap().as_array().unwrap()
@@ -65,11 +65,11 @@ fn word_watcher_handler_from_config(config: &Table) -> WordWatcher {
     let deny_channels: Vec<String> = array_to_string_array(
         config.get("deny_channels").unwrap().as_array().unwrap()
     );
-    let suggest_message = config.get("suggest_message")
+    let warning_message = config.get("warning_message")
         .unwrap().as_str().unwrap().to_owned();
 
-    WordWatcher::new(
-        watched_words, allow_users_by_tag, deny_channels, suggest_message
+    VerbalMoralityHandler::new(
+        bad_words, allow_users_by_tag, deny_channels, warning_message
     )
 }
 

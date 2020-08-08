@@ -8,8 +8,8 @@ type = "AckMessage"
 deny_channels = [ "never_ack_here" ]
 
 [[handlers]]
-type = "WordWatcher"
-watched_words = [ 
+type = "VerbalMorality"
+bad_words = [ 
   "trump", "clinton", "republican", "democrat", "boris johnson", "bojo",
   "orange tornado", "orange man", "biden", "sleepy joe", "sleepy eyes joe",
   "nazi"
@@ -17,8 +17,20 @@ watched_words = [
 allow_users_by_tag = [ "Command-R#3084" ] # people on the irc bridge cannot join
                                           # #politics, so don't nudge them to
 deny_channels = [ "politics" ]
-suggest_message = """\
+warning_message = """\
 Hey, that sounds like it may be best taken to the #politics channel. If you \
 don't see that channel, you can request it by @ messaging me with 'role grant \
-political animal'. If you change your mind I can revoke that role as well.
+political animal'. If you change your mind I can revoke that role as well.\
+"""
+
+[[handlers]]
+type = "VerbalMorality"
+bad_words = [
+  "damn", "shit", "fuck", "bastard", "cock", "hell"
+]
+allow_users_by_tag = []
+deny_channels = []
+warning_message = """\
+{{user}} you are fined one credit for a violation of the Verbal Morality \
+Statute.\
 """

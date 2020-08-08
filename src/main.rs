@@ -2,7 +2,7 @@ mod ack_message_handler;
 mod config_parser;
 mod mysterious_message_handler;
 mod role_wizard;
-mod word_watcher;
+mod verbal_morality_handler;
 
 use crate::config_parser::parse_handlers;
 use crate::mysterious_message_handler::MysteriousMessageHandler;
