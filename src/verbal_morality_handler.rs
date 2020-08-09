@@ -2,6 +2,7 @@ use crate::mysterious_message_handler::{
     MMHResult, MysteriousMessageHandler
 };
 use pickledb::PickleDb;
+use regex::Regex;
 use serenity::model::channel::Message;
 use serenity::model::id::ChannelId;
 use serenity::prelude::Context;
@@ -12,7 +13,7 @@ use std::sync::{Arc, Mutex};
 /// found, it directs the utterer to the suggested channel.
 pub struct VerbalMoralityHandler {
     /// Words which get a nudge from the bot.
-    bad_words: Vec<String>, // bad words, whatcha gonna do?
+    bad_words_regex: Regex,
     /// Users who are allowed to say these words without a nudge.
     allow_users_by_tag: Vec<String>,
     /// Channels in which to allow the watched words.
@@ -30,14 +31,20 @@ impl VerbalMoralityHandler {
         deny_channels: Vec<String>, warning_message: String,
         infraction_counter: PickleDb
     ) -> VerbalMoralityHandler {
-        let bad_words = words.iter()
-            .map(|word| word.to_lowercase())
-            .collect();
+        let bad_words = 
+            words.iter()
+                .map(|word| word.to_lowercase())
+                .collect::<Vec<String>>()
+                .join("|");
+        let bad_words_regex = Regex::new(&format!(
+            "(?i)\\b({})\\b", &bad_words
+        )).unwrap();
+        println!("{}", bad_words_regex);
         let allow_users_by_tag = allow_users.iter()
             .map(|word| word.to_lowercase())
             .collect();
         VerbalMoralityHandler {
-            bad_words, allow_users_by_tag, deny_channels, warning_message,
+            bad_words_regex, allow_users_by_tag, deny_channels, warning_message,
             infraction_counter: Arc::new(Mutex::new(infraction_counter))
         }
     }
@@ -70,15 +77,7 @@ impl MysteriousMessageHandler for VerbalMoralityHandler {
             return Ok(false);
         }
 
-        // if we find a word that should be nudged we should use this handler
-        let haystack = msg.content.to_lowercase();
-        for watched_word in &self.bad_words {
-            if haystack.contains(watched_word) {
-                return Ok(true);
-            }
-        }
-
-        Ok(false)
+        Ok(self.bad_words_regex.is_match(&msg.content))
     }
 
     fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
