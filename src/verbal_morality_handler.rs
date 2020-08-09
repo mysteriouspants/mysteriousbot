@@ -1,9 +1,11 @@
 use crate::mysterious_message_handler::{
     MMHResult, MysteriousMessageHandler
 };
+use pickledb::PickleDb;
 use serenity::model::channel::Message;
 use serenity::model::id::ChannelId;
 use serenity::prelude::Context;
+use std::sync::{Arc, Mutex};
 
 
 /// Handler which watches messages for specific words. When such a word is
@@ -17,12 +19,16 @@ pub struct VerbalMoralityHandler {
     deny_channels: Vec<String>,
     /// The message to display on infraction.
     warning_message: String,
+    /// Counts the number of infractions per server per user. Useless for now,
+    /// but may be fun for later.
+    infraction_counter: Arc<Mutex<PickleDb>>,
 }
 
 impl VerbalMoralityHandler {
     pub fn new(
         words: Vec<String>, allow_users: Vec<String>,
-        deny_channels: Vec<String>, warning_message: String
+        deny_channels: Vec<String>, warning_message: String,
+        infraction_counter: PickleDb
     ) -> VerbalMoralityHandler {
         let bad_words = words.iter()
             .map(|word| word.to_lowercase())
@@ -31,7 +37,8 @@ impl VerbalMoralityHandler {
             .map(|word| word.to_lowercase())
             .collect();
         VerbalMoralityHandler {
-            bad_words, allow_users_by_tag, deny_channels, warning_message
+            bad_words, allow_users_by_tag, deny_channels, warning_message,
+            infraction_counter: Arc::new(Mutex::new(infraction_counter))
         }
     }
 }
@@ -75,6 +82,26 @@ impl MysteriousMessageHandler for VerbalMoralityHandler {
     }
 
     fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
+        // track infractions
+        let guild_id = match msg.guild_id {
+            Some(id) => id.0,
+            None => 0
+        };
+        let user_id = msg.author.id.0;
+
+        if let Ok(mut infraction_db) = self.infraction_counter.lock() {
+            let record_key = format!("{}.{}", guild_id, user_id);
+            let mut infractions: u64 = match infraction_db.get(&record_key) {
+                Some(infractions) => infractions,
+                None => 0
+            };
+
+            infractions += 1;
+
+            infraction_db.set(&record_key, &infractions)?;
+        }
+
+        // derive the user's name
         let user = match msg.author_nick(&ctx.http) {
             Some(u) => u,
             None => {
