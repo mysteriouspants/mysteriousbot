@@ -39,7 +39,6 @@ impl VerbalMoralityHandler {
         let bad_words_regex = Regex::new(&format!(
             "(?i)\\b({})\\b", &bad_words
         )).unwrap();
-        println!("{}", bad_words_regex);
         let allow_users_by_tag = allow_users.iter()
             .map(|word| word.to_lowercase())
             .collect();

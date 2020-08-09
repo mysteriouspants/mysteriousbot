@@ -69,10 +69,11 @@ fn verbal_morality_handler_from_config(config: &Table) -> VerbalMoralityHandler 
     let warning_message = config.get("warning_message")
         .unwrap().as_str().unwrap().to_owned();
     let db_name = config.get("counter_db_name").unwrap().as_str().unwrap();
-    let infraction_counter = PickleDb::new_json(
-        format!("./db/{}", db_name),
-        PickleDbDumpPolicy::AutoDump
-    );
+    let db_path = format!("./db/{}", db_name);
+    let infraction_counter = match PickleDb::load_json(&db_path, PickleDbDumpPolicy::AutoDump) {
+        Ok(db) => db,
+        Err(_) => PickleDb::new_json(&db_path, PickleDbDumpPolicy::AutoDump)
+    };
 
     VerbalMoralityHandler::new(
         bad_words, allow_users_by_tag, deny_channels, warning_message,
