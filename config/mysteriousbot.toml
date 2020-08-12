@@ -27,7 +27,7 @@ counter_db_name = "politics_nudger"
 [[handlers]]
 type = "VerbalMorality"
 bad_words = [
-  "damn", "shit", "fuck", "bastard", "cock", "hell"
+  "damn", "shit", "fuck", "bastard", "cock", "hell", "fucking","fucker","dick","bitch","ass hole", "asshole", "shitty"
 ]
 allow_users_by_tag = []
 deny_channels = []
