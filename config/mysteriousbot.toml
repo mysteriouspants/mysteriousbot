@@ -1,7 +1,7 @@
 [[handlers]]
 type = "RoleWizard"
-allowed_role_grants = [ "political animal" ]
-allowed_role_revoke = [ "political animal" ]
+allowed_role_grants = [ "political animal", "Investment" ]
+allowed_role_revoke = [ "political animal", "Investment" ]
 
 [[handlers]]
 type = "AckMessage"
@@ -42,4 +42,4 @@ warning_message = """\
 {{user}} you are fined one credit for a violation of the Verbal Morality \
 Statute.\
 """
-counter_db_name = "demolition_man"
+counter_db_name = "demolition_man""
