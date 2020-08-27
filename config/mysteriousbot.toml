@@ -30,9 +30,9 @@ bad_words = [
   # variations on "damn"
   "damn", "damnit", "dammit",
   # variations on "shit"
-  "shit", "shitty",
+  "shit", "shitty", "shits"
   # varations on "fuck"
-  "fuck", "fucking", "fucker",
+  "fuck", "fucking", "fucker", "fuckers", "fuk", "fuc"
   # other words of ill-repute
   "bastard", "cock", "hell", "dick", "bitch", "ass hole", "asshole"
 ]
