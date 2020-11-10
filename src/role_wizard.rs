@@ -50,17 +50,18 @@ impl RoleWizard {
     }
 }
 
+#[async_trait::async_trait]
 impl MysteriousMessageHandler for RoleWizard {
     fn is_exclusive(&self) -> bool {
         true
     }
 
-    fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool> {
-        return Ok(msg.mentions_user_id(&ctx.cache.read().user.id)
+    async fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool> {
+        return Ok(msg.mentions_me(&ctx).await?
             && ROLE_REGEX.is_match(&msg.content.to_lowercase()));
     }
 
-    fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
+    async fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
         let content = msg.content.to_lowercase();
 
         if let Some(captures) = ROLE_REGEX.captures(&content) {
@@ -72,14 +73,14 @@ impl MysteriousMessageHandler for RoleWizard {
                 _ => None
             }.unwrap();
             let role = captures.get(2).unwrap().as_str();
-            let guild = msg.guild(&ctx.cache).unwrap();
+            let guild = msg.guild(&ctx.cache).await.unwrap();
 
-            let role_id = match guild.read().find_role_by_name_ignore_case(role) {
+            let role_id = match guild.find_role_by_name_ignore_case(role) {
                 Some(role) => role.id,
                 None => {
                     msg.channel_id.say(
                         &ctx.http, "No such role by that name, bud."
-                    )?;
+                    ).await?;
 
                     return Ok(());
                 }
@@ -95,16 +96,16 @@ impl MysteriousMessageHandler for RoleWizard {
                 msg.channel_id.say(
                     &ctx.http,
                     "I'm sorry, I cannot manage that role"
-                )?;
+                ).await?;
 
                 return Ok(());
             }
 
-            let mut member = msg.member(&ctx.cache).unwrap();
+            let mut member = msg.member(&ctx).await?;
             
             let result = match command {
-                CommandMode::Grant => member.add_role(&ctx.http, role_id),
-                CommandMode::Revoke => member.remove_role(&ctx.http, role_id),
+                CommandMode::Grant => member.add_role(&ctx.http, role_id).await,
+                CommandMode::Revoke => member.remove_role(&ctx.http, role_id).await,
             };
 
             match result {
@@ -112,12 +113,12 @@ impl MysteriousMessageHandler for RoleWizard {
                     msg.channel_id.say(
                         &ctx.http,
                         "you got it."
-                    )?;
+                    ).await?;
                 },
                 Err(e) => {
                     msg.channel_id.say(
                         &ctx.http, "there was a problem modifying your roles."
-                    )?;
+                    ).await?;
                     println!("Could not modify role {} with error {:?}", role, e)
                 }
             }
@@ -125,7 +126,7 @@ impl MysteriousMessageHandler for RoleWizard {
             msg.channel_id.say(
                 &ctx.http,
                 "The format for this command is role <grant|revoke> <role name>"
-            )?;
+            ).await?;
         }
 
         Ok(())

@@ -6,20 +6,3 @@ allowed_role_revoke = [ "political animal" ]
 [[handlers]]
 type = "AckMessage"
 deny_channels = [ "never_ack_here" ]
-
-[[handlers]]
-type = "VerbalMorality"
-bad_words = [ 
-  "trump", "clinton", "republican", "democrat", "boris johnson", "bojo",
-  "orange tornado", "orange man", "biden", "sleepy joe", "sleepy eyes joe",
-  "nazi"
-]
-allow_users_by_tag = [ "Command-R#3084" ] # people on the irc bridge cannot join
-                                          # #politics, so don't nudge them to
-deny_channels = [ "politics" ]
-warning_message = """\
-Hey, that sounds like it may be best taken to the #politics channel. If you \
-don't see that channel, you can request it by @ messaging me with 'role grant \
-political animal'. If you change your mind I can revoke that role as well.\
-"""
-counter_db_name = "politics_nudger"

@@ -1,6 +1,7 @@
 use crate::mysterious_message_handler::{
     MMHResult, MysteriousMessageHandler
 };
+use futures::future::join_all;
 use serenity::model::channel::Message;
 use serenity::model::id::ChannelId;
 use serenity::prelude::Context;
@@ -19,30 +20,30 @@ impl AckMessageHandler {
     }
 }
 
+#[async_trait::async_trait]
 impl MysteriousMessageHandler for AckMessageHandler {
     fn is_exclusive(&self) -> bool {
         false
     }
 
-    fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool> {
-        if let Some(guild_lock) = msg.guild(&ctx.cache) {
-            let guild = guild_lock.read();
+    async fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool> {
+        if let Some(guild) = msg.guild(&ctx.cache).await {
             let deny_channel_ids: Vec<Option<ChannelId>> = 
-                self.deny_channels.iter()
+                join_all(self.deny_channels.iter()
                 .map(|channel_name| 
                     guild.channel_id_from_name(&ctx.cache, channel_name)
-                ).collect();
+                )).await;
 
             if deny_channel_ids.contains(&Some(msg.channel_id)) {
                 return Ok(false);
             }
         }
 
-        return Ok(msg.mentions_user_id(ctx.cache.read().user.id));
+        return Ok(msg.mentions_me(&ctx).await?);
     }
 
-    fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
-        msg.channel_id.say(&ctx.http, "I don't know about that")?;
+    async fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
+        msg.channel_id.say(&ctx.http, "I don't know about that").await?;
         println!("Message:\n\t{}", msg.content);
         Ok(())
     }

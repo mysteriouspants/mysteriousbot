@@ -1,10 +1,16 @@
 use serenity::model::channel::Message;
 use serenity::prelude::Context;
-use std::error::Error;
+use thiserror::Error;
 
+#[derive(Debug, Error)]
+pub enum MMError {
+    #[error("Serenity returned an error {0} from Discord.")]
+    SerenityError(#[from] serenity::Error),
+}
 
-pub type MMHResult<T> = Result<T, Box<dyn Error>>;
+pub type MMHResult<T> = Result<T, MMError>;
 
+#[async_trait::async_trait]
 pub trait MysteriousMessageHandler : Send + Sync {
     /// Tells whether this event handler is "exclusive," which is to say that,
     /// when an event matches this handler, and is handled by this handler,
@@ -15,8 +21,8 @@ pub trait MysteriousMessageHandler : Send + Sync {
     }
 
     /// Whether or not the message should be handled by this handler.
-    fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool>;
+    async fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool>;
 
     /// Actually handle the message.
-    fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()>;
+    async fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()>;
 }
