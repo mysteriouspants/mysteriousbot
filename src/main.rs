@@ -9,10 +9,9 @@ use dotenv::dotenv;
 use serenity::client::Client;
 use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
-use serenity::prelude::{EventHandler, Context};
+use serenity::prelude::{Context, EventHandler};
 use std::env;
 use tokio_compat_02::FutureExt;
-
 
 struct Handler {
     message_handlers: Vec<Box<dyn MysteriousMessageHandler>>,
@@ -25,7 +24,7 @@ impl EventHandler for Handler {
             match handler.should_handle(&ctx, &msg).await {
                 Ok(true) => {
                     match handler.on_message(&ctx, &msg).await {
-                        Ok(_) => { },
+                        Ok(_) => {}
                         Err(err) => {
                             println!("handler {}", err);
                         }
@@ -34,8 +33,8 @@ impl EventHandler for Handler {
                     if handler.is_exclusive() {
                         return;
                     }
-                },
-                Ok(false) => {},
+                }
+                Ok(false) => {}
                 Err(err) => {
                     println!("Handler {}", err);
                 }
@@ -51,17 +50,18 @@ impl EventHandler for Handler {
 #[tokio::main]
 async fn main() {
     dotenv().ok(); // enable use of .env files
-    let token = &env::var("DISCORD_TOKEN")
-        .expect("DISCORD_TOKEN environment variable is unset, exiting");
-    let config_file = &env::var("MYSTERIOUSBOT_CONFIG")
-        .unwrap_or("./config/mysteriousbot.toml".to_owned());
+    let token =
+        &env::var("DISCORD_TOKEN").expect("DISCORD_TOKEN environment variable is unset, exiting");
+    let config_file =
+        &env::var("MYSTERIOUSBOT_CONFIG").unwrap_or("./config/mysteriousbot.toml".to_owned());
     let handler = Handler {
-        message_handlers: parse_handlers(
-            std::fs::read_to_string(config_file).unwrap()
-        )
+        message_handlers: parse_handlers(std::fs::read_to_string(config_file).unwrap()),
     };
     let mut client = Client::builder(token)
-        .event_handler(handler).compat().await.expect("Error creating client");
+        .event_handler(handler)
+        .compat()
+        .await
+        .expect("Error creating client");
 
     if let Err(why) = client.start().compat().await {
         println!("An error occurred while running the client: {:?}", why);

@@ -4,15 +4,12 @@
 //! public roles on the whims of the requester. Tireless and of infinite
 //! patience, he's impossible to catch flustered, and he never sleeps.
 
-use crate::mysterious_message_handler::{
-    MMHResult, MysteriousMessageHandler
-};
+use crate::mysterious_message_handler::{MMHResult, MysteriousMessageHandler};
 use lazy_static::lazy_static;
 use regex::Regex;
 use serenity::model::channel::Message;
 use serenity::model::guild::{Guild, Role};
 use serenity::prelude::Context;
-
 
 lazy_static! {
     // unwrap is okay here because we've already validated the regex
@@ -43,10 +40,11 @@ pub struct RoleWizard {
 }
 
 impl RoleWizard {
-    pub fn new(
-        allowed_role_grants: Vec<String>, allowed_role_revoke: Vec<String>
-    ) -> RoleWizard {
-        RoleWizard { allowed_role_grants, allowed_role_revoke }
+    pub fn new(allowed_role_grants: Vec<String>, allowed_role_revoke: Vec<String>) -> RoleWizard {
+        RoleWizard {
+            allowed_role_grants,
+            allowed_role_revoke,
+        }
     }
 }
 
@@ -57,8 +55,7 @@ impl MysteriousMessageHandler for RoleWizard {
     }
 
     async fn should_handle(&self, ctx: &Context, msg: &Message) -> MMHResult<bool> {
-        return Ok(msg.mentions_me(&ctx).await?
-            && ROLE_REGEX.is_match(&msg.content.to_lowercase()));
+        return Ok(msg.mentions_me(&ctx).await? && ROLE_REGEX.is_match(&msg.content.to_lowercase()));
     }
 
     async fn on_message(&self, ctx: &Context, msg: &Message) -> MMHResult<()> {
@@ -70,17 +67,18 @@ impl MysteriousMessageHandler for RoleWizard {
             let command = match captures.get(1).unwrap().as_str() {
                 "grant" => Some(CommandMode::Grant),
                 "revoke" => Some(CommandMode::Revoke),
-                _ => None
-            }.unwrap();
+                _ => None,
+            }
+            .unwrap();
             let role = captures.get(2).unwrap().as_str();
             let guild = msg.guild(&ctx.cache).await.unwrap();
 
             let role_id = match guild.find_role_by_name_ignore_case(role) {
                 Some(role) => role.id,
                 None => {
-                    msg.channel_id.say(
-                        &ctx.http, "No such role by that name, bud."
-                    ).await?;
+                    msg.channel_id
+                        .say(&ctx.http, "No such role by that name, bud.")
+                        .await?;
 
                     return Ok(());
                 }
@@ -93,16 +91,15 @@ impl MysteriousMessageHandler for RoleWizard {
             };
 
             if !allow_list.contains(&role.to_owned()) {
-                msg.channel_id.say(
-                    &ctx.http,
-                    "I'm sorry, I cannot manage that role"
-                ).await?;
+                msg.channel_id
+                    .say(&ctx.http, "I'm sorry, I cannot manage that role")
+                    .await?;
 
                 return Ok(());
             }
 
             let mut member = msg.member(&ctx).await?;
-            
+
             let result = match command {
                 CommandMode::Grant => member.add_role(&ctx.http, role_id).await,
                 CommandMode::Revoke => member.remove_role(&ctx.http, role_id).await,
@@ -110,23 +107,22 @@ impl MysteriousMessageHandler for RoleWizard {
 
             match result {
                 Ok(()) => {
-                    msg.channel_id.say(
-                        &ctx.http,
-                        "you got it."
-                    ).await?;
-                },
+                    msg.channel_id.say(&ctx.http, "you got it.").await?;
+                }
                 Err(e) => {
-                    msg.channel_id.say(
-                        &ctx.http, "there was a problem modifying your roles."
-                    ).await?;
+                    msg.channel_id
+                        .say(&ctx.http, "there was a problem modifying your roles.")
+                        .await?;
                     println!("Could not modify role {} with error {:?}", role, e)
                 }
             }
         } else {
-            msg.channel_id.say(
-                &ctx.http,
-                "The format for this command is role <grant|revoke> <role name>"
-            ).await?;
+            msg.channel_id
+                .say(
+                    &ctx.http,
+                    "The format for this command is role <grant|revoke> <role name>",
+                )
+                .await?;
         }
 
         Ok(())

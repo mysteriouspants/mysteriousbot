@@ -11,7 +11,7 @@ pub enum MMError {
 pub type MMHResult<T> = Result<T, MMError>;
 
 #[async_trait::async_trait]
-pub trait MysteriousMessageHandler : Send + Sync {
+pub trait MysteriousMessageHandler: Send + Sync {
     /// Tells whether this event handler is "exclusive," which is to say that,
     /// when an event matches this handler, and is handled by this handler,
     /// ought the event continue to propagate through the handler chain, or
