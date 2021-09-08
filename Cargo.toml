@@ -14,8 +14,7 @@ futures = "0.3.8"
 lazy_static = "1.4.0"
 pickledb = "0.4.1"
 regex = "1.4.2"
-serenity = { version = "0.9.1", default-features = false, features = [ "builder", "cache", "client", "gateway", "http", "model", "utils", "rustls_backend" ] }
+serenity = { version = "0.10.9", default-features = false, features = [ "builder", "cache", "client", "gateway", "http", "model", "utils", "rustls_backend", "unstable_discord_api" ] }
 thiserror = "1.0.22"
-tokio = { version = "0.3.3", features = [ "macros", "rt", "rt-multi-thread" ] }
-tokio-compat-02 = "0.1.2" # can drop when serenity upgrades to tokio 0.3
+tokio = { version = "1.2.0", features = [ "macros", "rt", "rt-multi-thread" ] }
 toml = "0.5.7"

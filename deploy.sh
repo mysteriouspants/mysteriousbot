@@ -8,18 +8,11 @@ SERVICE_USER_NAME=mysteriousbot
 SERVICE_USER_DIR=/home/mysteriousbot
 SERVICE_NAME=mysteriousbot
 
-# make the build environment, if it hasn't been already. using docker allows us
-# to pin the build to an os version that matches what mysteriouspants.com is
-# running.
-if [ ! -f .builder ]; then
-  docker build -t mysteriousbotbuilder:latest .
-  echo "$(date)" > .builder
-fi
-
-# do the build
-docker run --rm --name mysteriousbotc \
-  -v $(pwd):/user/mysteriousbotbuilder/src \
-  mysteriousbotbuilder:latest \
+docker run --rm --name mysteriousbot \
+  -u $(id -u):$(id -g) \
+  -v $(pwd):/src \
+  -w /src \
+  rust:1.54 \
   cargo build --release
 
 # deploy the build if successful
