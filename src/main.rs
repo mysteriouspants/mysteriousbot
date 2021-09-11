@@ -1,13 +1,23 @@
+use configparser::Config;
 use dotenv::dotenv;
-use futures::TryFutureExt;
+use emojicache::EmojiCache;
 use serenity::client::Client;
+use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
+use serenity::model::guild::GuildStatus;
 use serenity::model::interactions::application_command::ApplicationCommand;
 use serenity::model::interactions::{Interaction, InteractionResponseType};
 use serenity::prelude::{Context, EventHandler};
 use std::env;
+use std::fs::read_to_string;
 
-struct Handler;
+mod configparser;
+mod emojicache;
+
+struct Handler {
+    config: Config,
+    emoji_cache: EmojiCache,
+}
 
 #[serenity::async_trait]
 impl EventHandler for Handler {
@@ -35,8 +45,40 @@ impl EventHandler for Handler {
             }
         }
     }
+    async fn message(&self, ctx: Context, message: Message) {
+        // P33ky 261559920485335040
+        // Necro 249051133987913728
+        if message.mentions_user_id(249051133987913728) {
+            // P33ky
+            let twemojis = ["swedishfish"];
+            for twemoji in twemojis {
+                if let Some(guild_id) = message.guild_id {
+                    if let Ok(Some(emoji)) =
+                        self.emoji_cache.get_emoji(&ctx, &guild_id, twemoji).await
+                    {
+                        message.react(&ctx, emoji).await;
+                    }
+                }
+            }
+        }
+    }
     async fn ready(&self, ctx: Context, ready: Ready) {
         println!("{} is connected!", ready.user.name);
+
+        for guild in ready.guilds {
+            match guild {
+                GuildStatus::OnlineGuild(g) => {
+                    
+                },
+                GuildStatus::OnlinePartialGuild(pg) => {
+
+                },
+                GuildStatus::Offline(gu) => {
+
+                },
+                _ => { /* do nothing */ }
+            }
+        }
 
         let commands = ApplicationCommand::set_global_application_commands(&ctx.http, |commands| {
             commands
@@ -75,7 +117,16 @@ async fn main() {
         .expect("DISCORD_APPLICATION_ID is not an integer, exiting");
     let token =
         &env::var("DISCORD_TOKEN").expect("DISCORD_TOKEN environment variable is unset, exiting");
-    let handler = Handler;
+    let config_file =
+        &env::var("MYSTERIOUSBOT_CONFIG").unwrap_or("./config/mysteriousbot.toml".to_owned());
+    let handler = Handler {
+        config: toml::from_str(
+            &read_to_string(config_file)
+                .expect(&format!("Config file at {} could not be read", config_file)),
+        )
+        .expect("Config could not be parsed"),
+        emoji_cache: EmojiCache::new(),
+    };
     let mut client = Client::builder(token)
         .application_id(application_id)
         .event_handler(handler)

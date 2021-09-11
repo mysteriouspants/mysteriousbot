@@ -1,6 +1,17 @@
-#!/bin/sh
+#!/bin/bash
+
+rust_in_docker() {
+  docker run --rm --name mysteriousbot \
+    -u $(id -u):$(id -g) \
+    -v $(pwd):/src \
+    -w /src \
+    rust:1.54 \
+    "$1"
+}
 
 set -o xtrace
+set -x
+set -e
 
 SERVICE_SU_USER=xpm
 SERVICE_HOST=mysteriouspants.com
@@ -8,12 +19,8 @@ SERVICE_USER_NAME=mysteriousbot
 SERVICE_USER_DIR=/home/mysteriousbot
 SERVICE_NAME=mysteriousbot
 
-docker run --rm --name mysteriousbot \
-  -u $(id -u):$(id -g) \
-  -v $(pwd):/src \
-  -w /src \
-  rust:1.54 \
-  cargo build --release
+rust_in_docker cargo test -- --nocapture
+rust_in_docker cargo build --release
 
 # deploy the build if successful
 if [ $? -eq 0 ]; then

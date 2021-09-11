@@ -1,8 +1,52 @@
-[[handlers]]
-type = "RoleWizard"
-allowed_role_grants = [ "political animal" ]
-allowed_role_revoke = [ "political animal" ]
+# Bot Testing Playground
+[[guilds.728474842877263902.slash_responders]]
+command = "wednesday"
+response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
 
-[[handlers]]
-type = "AckMessage"
-deny_channels = [ "never_ack_here" ]
+[[guilds.728474842877263902.slash_responders]]
+command = "friday"
+response = "https://www.idevgames.com/its_friday_then.mp4"
+
+[[guilds.728474842877263902.slash_responders]]
+command = "bus"
+response = ":musical_score::musical_note: Another one rides the bus! :notes:"
+
+[[guilds.728474842877263902.autoemojis]]
+on = { mention = 249051133987913728 } # Necrothitude
+twemojis = [ "swedishfish"]
+#                    #general
+only_in_channels = [ 732783069823762453 ]
+
+# iDevGames
+[[guilds.488890763720130560.slash_responders]]
+command = "wednesday"
+response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
+
+[[guilds.488890763720130560.slash_responders]]
+command = "friday"
+response = "https://www.idevgames.com/its_friday_then.mp4"
+
+[[guilds.488890763720130560.slash_responders]]
+command = "bus"
+response = ":musical_score::musical_note: Another one rides the bus! :notes:"
+
+# RECON/B0T
+[[guilds.499288051290210312.slash_responders]]
+command = "wednesday"
+response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
+
+[[guilds.499288051290210312.slash_responders]]
+command = "friday"
+response = "https://www.idevgames.com/its_friday_then.mp4"
+
+[[guilds.499288051290210312.autoemojis]]
+on = { mention = 261559920485335040 } # P33ky
+twemojis = [ "PingBad"]
+#                    #alliance           #nsfw
+only_in_channels = [ 499363186957352970, 499363309070319616 ]
+
+[[guilds.499288051290210312.autoemojis]]
+on = { message = 139425197118849025 } # Skorpion Medion
+twemojis = [ "swedishfish"]
+#                    #alliance           #nsfw
+only_in_channels = [ 499363186957352970, 499363309070319616 ]

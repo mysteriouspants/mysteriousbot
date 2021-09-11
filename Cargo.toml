@@ -8,13 +8,13 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.41"
-dotenv = "0.15.0"
-futures = "0.3.8"
-lazy_static = "1.4.0"
-pickledb = "0.4.1"
-regex = "1.4.2"
+async-trait = "0.1"
+dotenv = "0.15"
+futures = "0.3"
+mysterious_cache = { git = "https://github.com/mysteriouspants/mysterious_cache" }
+regex = "1.4"
 serenity = { version = "0.10.9", default-features = false, features = [ "builder", "cache", "client", "gateway", "http", "model", "utils", "rustls_backend", "unstable_discord_api" ] }
-thiserror = "1.0.22"
-tokio = { version = "1.2.0", features = [ "macros", "rt", "rt-multi-thread" ] }
-toml = "0.5.7"
+thiserror = "1.0"
+tokio = { version = "1.2", features = [ "macros", "rt", "rt-multi-thread" ] }
+toml = "0.5"
+serde = { version = "1.0", features = [ "derive" ] }
