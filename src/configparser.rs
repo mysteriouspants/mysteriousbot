@@ -1,23 +1,75 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, num::ParseIntError, str::FromStr};
 use serde::{Deserialize, Serialize};
+use toml::de::Error as TomlError;
+use thiserror::Error;
+
+/// Configures the mysterious bot.
+#[derive(Debug)]
+pub struct Config {
+    /// Per-guild config.
+    pub guilds: HashMap<u64, GuildConfig>,
+}
+
+impl FromStr for Config {
+    type Err = ConfigFromStrError;
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        let sc: SerializedConfig = toml::from_str(value)?;
+        let mut guilds = HashMap::new();
+
+        for (k, v) in sc.guilds.into_iter() {
+            guilds.insert(k.parse()?, v.to_guild_config());
+        }
+
+        Ok(Config{ guilds })
+    }
+}
+
+#[derive(Debug, Error)]
+pub enum ConfigFromStrError {
+    #[error("Failed to parse TOML with error {0:?}")]
+    Toml(#[from] TomlError),
+    #[error("Guild ID {0:?} is not an integer")]
+    NonintegerGuildId(#[from] ParseIntError),
+}
 
 /// Configures the mysterious bot.
 #[derive(Debug, Deserialize, Serialize)]
-pub struct Config {
+struct SerializedConfig {
     /// Per-guild config.
-    pub guilds: HashMap<String, GuildConfig>,
+    guilds: HashMap<String, SerializedGuildConfig>,
+}
+
+/// Configures how the mysterious bot will behave in a specific guild.
+#[derive(Debug)]
+pub struct GuildConfig {
+    /// Slash-responders, which are simple shortcuts that echo a
+    /// preset response when invoked. This is for the lulz.
+    pub slash_responders: Vec<SlashResponderConfig>,
+    /// Auto-emojis, which automatically react to messages mentioning or
+    /// sent by a specific individual with a specific emoji. This too is
+    /// for the lulz.
+    pub autoemojis: Vec<AutoEmojiConfig>,
 }
 
 /// Configures how the mysterious bot will behave in a specific guild.
 #[derive(Debug, Deserialize, Serialize)]
-pub struct GuildConfig {
+struct SerializedGuildConfig {
     /// Slash-responders, which are simple shortcuts that echo a
     /// preset response when invoked. This is for the lulz.
-    pub slash_responders: Option<Vec<SlashResponderConfig>>,
+    slash_responders: Option<Vec<SlashResponderConfig>>,
     /// Auto-emojis, which automatically react to messages mentioning or
     /// sent by a specific individual with a specific emoji. This too is
     /// for the lulz.
-    pub autoemojis: Option<Vec<AutoEmojiConfig>>,
+    autoemojis: Option<Vec<AutoEmojiConfig>>,
+}
+
+impl SerializedGuildConfig {
+    fn to_guild_config(self) -> GuildConfig {
+        GuildConfig {
+            slash_responders: self.slash_responders.unwrap_or_else(|| Vec::default()),
+            autoemojis: self.autoemojis.unwrap_or_else(|| Vec::default())
+        }
+    }
 }
 
 /// A slash responder echoes a preset response when invoked.
@@ -25,6 +77,8 @@ pub struct GuildConfig {
 pub struct SlashResponderConfig {
     /// The name of the slash command.
     pub command: String,
+    /// A little help string.
+    pub description: String,
     /// The resonse to echo back.
     pub response: String,
 }
@@ -63,7 +117,7 @@ mod tests {
 
     #[test]
     fn config_is_valid() {
-        let config: Config = toml::from_str(
+        let config = Config::from_str(
             &read_to_string("config/mysteriousbot.toml").unwrap()
         ).unwrap();
         println!("{:?}", config);

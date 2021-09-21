@@ -1,14 +1,17 @@
 # Bot Testing Playground
 [[guilds.728474842877263902.slash_responders]]
 command = "wednesday"
+description = "it is wednesday my doods"
 response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
 
 [[guilds.728474842877263902.slash_responders]]
 command = "friday"
+description = "mufasa, it's friday then"
 response = "https://www.idevgames.com/its_friday_then.mp4"
 
 [[guilds.728474842877263902.slash_responders]]
 command = "bus"
+description = "another one rides the bus"
 response = ":musical_score::musical_note: Another one rides the bus! :notes:"
 
 [[guilds.728474842877263902.autoemojis]]
@@ -20,23 +23,28 @@ only_in_channels = [ 732783069823762453 ]
 # iDevGames
 [[guilds.488890763720130560.slash_responders]]
 command = "wednesday"
+description = "it is wednesday my doods"
 response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
 
 [[guilds.488890763720130560.slash_responders]]
 command = "friday"
+description = "mufasa, it's friday then"
 response = "https://www.idevgames.com/its_friday_then.mp4"
 
 [[guilds.488890763720130560.slash_responders]]
 command = "bus"
+description = "another one rides the bus"
 response = ":musical_score::musical_note: Another one rides the bus! :notes:"
 
 # RECON/B0T
 [[guilds.499288051290210312.slash_responders]]
 command = "wednesday"
+description = "it is wednesday my doods"
 response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
 
 [[guilds.499288051290210312.slash_responders]]
 command = "friday"
+description = "mufasa, it's friday then"
 response = "https://www.idevgames.com/its_friday_then.mp4"
 
 [[guilds.499288051290210312.autoemojis]]
