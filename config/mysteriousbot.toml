@@ -49,7 +49,7 @@ response = "https://www.idevgames.com/its_friday_then.mp4"
 
 [[guilds.499288051290210312.autoemojis]]
 on = { mention = 261559920485335040 } # P33ky
-twemojis = [ "PingBad"]
+twemojis = [ "pingsock"]
 #                    #alliance           #nsfw
 only_in_channels = [ 499363186957352970, 499363309070319616 ]
 
