@@ -5,8 +5,8 @@ rust_in_docker() {
     -u $(id -u):$(id -g) \
     -v $(pwd):/src \
     -w /src \
-    rust:1.54 \
-    "$1"
+    rust:1.55 \
+    $@
 }
 
 set -o xtrace
