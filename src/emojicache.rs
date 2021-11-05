@@ -1,8 +1,9 @@
-use std::time::Duration;
+use caches::{Cache, AdaptiveCache};
+use std::{time::{Duration, Instant}, sync::Arc};
 use thiserror::Error;
-use mysterious_cache::{ExpiringCache, SharedCache};
 use serenity::{client::Context, model::{guild::Emoji, id::GuildId}};
 use serenity::Error as DiscordError;
+use parking_lot::RwLock;
 
 #[derive(Debug, Error)]
 pub enum GetEmojiError {
@@ -10,19 +11,24 @@ pub enum GetEmojiError {
   Discord(#[from] DiscordError),
 }
 
+struct CacheValue {
+    emojis: Vec<Emoji>,
+    inserted_at: Instant,
+}
+
 /// An LRU Cache which holds the emojis - cached because hitting the
 /// Discord emoji API potentially on every event sounds like a bad time.
 pub struct EmojiCache {
-    cache: SharedCache<ExpiringCache<GuildId, Vec<Emoji>>, GuildId, Vec<Emoji>>,
+    cache: Arc<RwLock<AdaptiveCache<GuildId, CacheValue>>>,
+    timeout: Duration,
 }
 
 impl EmojiCache {
     pub fn new() -> Self {
+        let cache: AdaptiveCache<GuildId, CacheValue> = AdaptiveCache::new(5).unwrap();
         Self {
-            cache: SharedCache::with_cache(ExpiringCache::with_capacity_and_timeout(
-                5,
-                Duration::from_secs(24 * 60 * 60),
-            )),
+            cache: Arc::from(RwLock::from(cache)),
+            timeout: Duration::from_secs(24 * 60 * 60),
         }
     }
     pub async fn get_emoji(&self, ctx: &Context, guild_id: &GuildId, twemoji: &str) -> Result<Option<Emoji>, GetEmojiError> {
@@ -31,13 +37,23 @@ impl EmojiCache {
         emoji.name == twemoji
       }).next().map(Emoji::clone))
     }
+
     async fn get_emojis(&self, ctx: &Context, guild_id: &GuildId) -> Result<Vec<Emoji>, GetEmojiError> {
-      if let Some(emojis) = self.cache.get(guild_id) {
-        return Ok(emojis);
-      } else {
+        // look up stored emojis
+        if let Some(value) = self.cache.write().get(guild_id) {
+            if value.inserted_at.elapsed() > self.timeout {
+                return Ok(value.emojis.clone());
+            }
+        }
+
+        // try to load new emojis
         let emojis = guild_id.emojis(ctx).await?;
-        self.cache.insert(*guild_id, emojis.clone());
-        return Ok(emojis);
-      }
+
+        self.cache.write().put(*guild_id, CacheValue {
+            emojis: emojis.clone(),
+            inserted_at: Instant::now(),
+        });
+
+        Ok(emojis)
     }
 }
