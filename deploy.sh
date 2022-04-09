@@ -3,9 +3,9 @@
 rust_in_docker() {
   docker run --rm --name mysteriousbot \
     -u $(id -u):$(id -g) \
-    -v $(pwd):/src \
+    -v $(pwd):/src:Z \
     -w /src \
-    rust:1.55 \
+    rust:1.58.1 \
     $@
 }
 

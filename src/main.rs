@@ -6,6 +6,7 @@ use serenity::model::channel::Message;
 use serenity::model::gateway::Ready;
 use serenity::model::guild::GuildStatus;
 use serenity::model::id::GuildId;
+use serenity::model::interactions::application_command::ApplicationCommand;
 use serenity::model::interactions::{Interaction, InteractionResponseType};
 use serenity::prelude::{Context, EventHandler};
 use std::env;
@@ -56,6 +57,8 @@ impl Handler {
                     if let Err(why) = message.react(&ctx, emoji).await {
                         log::error!("Failed to react to message with reason {:?}", why);
                     }
+                } else {
+                    log::error!("Unknown twemoji {}", twemoji);
                 }
             }
         }
@@ -118,6 +121,10 @@ impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: Ready) {
         log::info!("{} is connected!", ready.user.name);
 
+        let _ = ApplicationCommand::set_global_application_commands(&ctx.http, |commands| {
+            commands
+        }).await;
+
         let guilds = ready
             .guilds
             .iter()
@@ -126,8 +133,7 @@ impl EventHandler for Handler {
                 GuildStatus::OnlinePartialGuild(pg) => Some(pg.id),
                 GuildStatus::Offline(gu) => Some(gu.id),
                 _ => None,
-            })
-            .collect::<Vec<GuildId>>();
+            });
 
         for guild in guilds {
             let guild_id = guild.0;
