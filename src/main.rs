@@ -1,17 +1,19 @@
 use configparser::{AutoEmojiTrigger, Config, GuildConfig};
 use dotenv::dotenv;
 use emojicache::EmojiCache;
-use serenity::client::Client;
-use serenity::model::channel::Message;
-use serenity::model::gateway::Ready;
-use serenity::model::guild::GuildStatus;
-use serenity::model::id::GuildId;
-use serenity::model::interactions::application_command::ApplicationCommand;
-use serenity::model::interactions::{Interaction, InteractionResponseType};
-use serenity::prelude::{Context, EventHandler};
-use std::env;
-use std::fs::read_to_string;
-use std::str::FromStr;
+use serenity::{
+    client::Client,
+    model::{
+        channel::Message,
+        gateway::{GatewayIntents, Ready},
+        id::GuildId,
+        interactions::{
+            application_command::ApplicationCommand, Interaction, InteractionResponseType,
+        },
+    },
+    prelude::{Context, EventHandler},
+};
+use std::{env, fs::read_to_string, str::FromStr};
 
 mod configparser;
 mod emojicache;
@@ -121,19 +123,10 @@ impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: Ready) {
         log::info!("{} is connected!", ready.user.name);
 
-        let _ = ApplicationCommand::set_global_application_commands(&ctx.http, |commands| {
-            commands
-        }).await;
+        let _ = ApplicationCommand::set_global_application_commands(&ctx.http, |commands| commands)
+            .await;
 
-        let guilds = ready
-            .guilds
-            .iter()
-            .filter_map(|guild| match guild {
-                GuildStatus::OnlineGuild(g) => Some(g.id),
-                GuildStatus::OnlinePartialGuild(pg) => Some(pg.id),
-                GuildStatus::Offline(gu) => Some(gu.id),
-                _ => None,
-            });
+        let guilds = ready.guilds.iter().map(|offline_guild| offline_guild.id);
 
         for guild in guilds {
             let guild_id = guild.0;
@@ -196,7 +189,7 @@ async fn main() {
         .expect("Config could not be parsed"),
         emoji_cache: EmojiCache::new(),
     };
-    let mut client = Client::builder(token)
+    let mut client = Client::builder(token, GatewayIntents::GUILD_MESSAGES)
         .application_id(application_id)
         .event_handler(handler)
         .await
