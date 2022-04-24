@@ -2,12 +2,12 @@
 [[guilds.728474842877263902.slash_responders]]
 command = "wednesday"
 description = "it is wednesday my doods"
-response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
+response = "https://cdn.discordapp.com/attachments/874511358668972093/963863870387142717/its_wednesday_my_doods.mp4"
 
 [[guilds.728474842877263902.slash_responders]]
 command = "friday"
 description = "mufasa, it's friday then"
-response = "https://www.idevgames.com/its_friday_then.mp4"
+response = "https://cdn.discordapp.com/attachments/874511358668972093/964587359637233674/Mufasa-_its_friday_then.mp4"
 
 [[guilds.728474842877263902.slash_responders]]
 command = "bus"
@@ -20,16 +20,20 @@ twemojis = [ "swedishfish"]
 #                    #general
 only_in_channels = [ 732783069823762453 ]
 
+[[guilds.728474842877263902.autoresponders]]
+on = { match = "\\b(\\x66\\x61\\x70|\\x6d\\x61\\x73\\x74\\x75\\x72\\x62\\x61\\x74\\x65|\\x63\\x75\\x6d)\\b" }
+message = "https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4"
+
 # iDevGames
 [[guilds.488890763720130560.slash_responders]]
 command = "wednesday"
 description = "it is wednesday my doods"
-response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
+response = "https://cdn.discordapp.com/attachments/874511358668972093/963863870387142717/its_wednesday_my_doods.mp4"
 
 [[guilds.488890763720130560.slash_responders]]
 command = "friday"
 description = "mufasa, it's friday then"
-response = "https://www.idevgames.com/its_friday_then.mp4"
+response = "https://cdn.discordapp.com/attachments/874511358668972093/964587359637233674/Mufasa-_its_friday_then.mp4"
 
 [[guilds.488890763720130560.slash_responders]]
 command = "bus"
@@ -40,12 +44,12 @@ response = ":musical_score::musical_note: Another one rides the bus! :notes:"
 [[guilds.499288051290210312.slash_responders]]
 command = "wednesday"
 description = "it is wednesday my doods"
-response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
+response = "https://cdn.discordapp.com/attachments/874511358668972093/963863870387142717/its_wednesday_my_doods.mp4"
 
 [[guilds.499288051290210312.slash_responders]]
 command = "friday"
 description = "mufasa, it's friday then"
-response = "https://www.idevgames.com/its_friday_then.mp4"
+response = "https://cdn.discordapp.com/attachments/874511358668972093/964587359637233674/Mufasa-_its_friday_then.mp4"
 
 [[guilds.499288051290210312.autoemojis]]
 on = { mention = 261559920485335040 } # P33ky
@@ -68,19 +72,25 @@ only_in_channels = [ 792116253954932776, 792696740234395648, 792116632872419338,
 
 [[guilds.792112275473301576.autoemojis]]
 on = { message = 249051133987913728 } # Necrothitude
-twemojis = [ "pepetoilet" ]
+twemojis = [ "_pepetoilet_" ]
 #                    #shitpost-central
 only_in_channels = [ 874511358668972093 ]
+
+[[guilds.792112275473301576.autoresponders]]
+on = { match = "\\b(\\x66\\x61\\x70|\\x6d\\x61\\x73\\x74\\x75\\x72\\x62\\x61\\x74\\x65|\\x63\\x75\\x6d)\\b" }
+message = "https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4"
+#                    #corp-chat          # industry          #commerce-shopping  #transports-r-us    #token-proof        #keep-star          #general            #shitpost-central   #games              #music              #food-related       #eve-news           #wheres-daddy-today
+only_in_channels = [ 792116253954932776, 792696740234395648, 792116632872419338, 881323330425212969, 917563911790800936, 918485978128187423, 792112359215726602, 874511358668972093, 803049246043275294, 832285540019077180, 859993967319842847, 878233071546171422, 872020091976433674 ]
 
 [[guilds.792112275473301576.slash_responders]]
 command = "wednesday"
 description = "it is wednesday my doods"
-response = "https://www.idevgames.com/its_wednesday_my_doods.mp4"
+response = "https://cdn.discordapp.com/attachments/874511358668972093/963863870387142717/its_wednesday_my_doods.mp4"
 
 [[guilds.792112275473301576.slash_responders]]
 command = "friday"
 description = "mufasa, it's friday then"
-response = "https://www.idevgames.com/its_friday_then.mp4"
+response = "https://cdn.discordapp.com/attachments/874511358668972093/964587359637233674/Mufasa-_its_friday_then.mp4"
 
 [[guilds.792112275473301576.slash_responders]]
 command = "bus"

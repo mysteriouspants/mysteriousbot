@@ -1,4 +1,4 @@
-use configparser::{AutoEmojiTrigger, Config, GuildConfig};
+use configparser::{AutoTrigger, ChannelFilter, Config, GuildConfig};
 use dotenv::dotenv;
 use emojicache::EmojiCache;
 use serenity::{
@@ -32,25 +32,10 @@ impl Handler {
         guild_config: &GuildConfig,
     ) {
         for autoemojiconfig in &guild_config.autoemojis {
-            let should_react = match autoemojiconfig.on {
-                AutoEmojiTrigger::Mention(user_id) => message.mentions_user_id(user_id),
-                AutoEmojiTrigger::Message(user_id) => message.author.id == user_id,
-            };
-
-            if !should_react {
+            if !matches_channel_filter(&autoemojiconfig.channel_filter, message)
+                || !matches_autotrigger(&autoemojiconfig.on, ctx, message)
+            {
                 continue; // we shouldn't even bother
-            }
-
-            if let Some(ignore_channels) = &autoemojiconfig.ignore_channels {
-                if ignore_channels.contains(&message.channel_id.0) {
-                    continue; // we should ignore this triggering
-                }
-            }
-
-            if let Some(only_in_channels) = &autoemojiconfig.only_in_channels {
-                if !only_in_channels.contains(&message.channel_id.0) {
-                    continue; // we should ignore this triggering
-                }
             }
 
             for twemoji in &autoemojiconfig.twemojis {
@@ -65,6 +50,50 @@ impl Handler {
             }
         }
     }
+
+    async fn handle_autoresponder(
+        &self,
+        ctx: &Context,
+        message: &Message,
+        _guild_id: &GuildId,
+        guild_config: &GuildConfig,
+    ) {
+        for autoresponder in &guild_config.autoresponders {
+            if !matches_channel_filter(&autoresponder.channel_filter, message)
+                || !matches_autotrigger(&autoresponder.on, ctx, message)
+            {
+                continue; // we shouldn't even bother
+            }
+
+            if let Err(why) = message.reply(ctx, &autoresponder.message).await {
+                log::error!("Failed to autoreply to message with reason {:?}", why);
+            }
+        }
+    }
+}
+
+fn matches_autotrigger(trigger: &AutoTrigger, ctx: &Context, message: &Message) -> bool {
+    match &trigger {
+        AutoTrigger::Mention(user_id) => message.mentions_user_id(*user_id),
+        AutoTrigger::Message(user_id) => message.author.id == *user_id,
+        AutoTrigger::Match(regex) => regex.is_match(&message.content_safe(ctx)),
+    }
+}
+
+fn matches_channel_filter(channel_filter: &ChannelFilter, message: &Message) -> bool {
+    if let Some(ignore_channels) = &channel_filter.ignore_channels {
+        if ignore_channels.contains(&message.channel_id.0) {
+            return false; // we should ignore this triggering
+        }
+    }
+
+    if let Some(only_in_channels) = &channel_filter.only_in_channels {
+        if !only_in_channels.contains(&message.channel_id.0) {
+            return false; // we should ignore this triggering
+        }
+    }
+
+    true
 }
 
 #[serenity::async_trait]
@@ -115,8 +144,9 @@ impl EventHandler for Handler {
             None => return, // not a guild we have config for, skip
         };
 
-        // autoemojis
         self.handle_autoemoji(&ctx, &message, &guild_id, &guild_config)
+            .await;
+        self.handle_autoresponder(&ctx, &message, &guild_id, &guild_config)
             .await;
     }
 
@@ -189,11 +219,16 @@ async fn main() {
         .expect("Config could not be parsed"),
         emoji_cache: EmojiCache::new(),
     };
-    let mut client = Client::builder(token, GatewayIntents::GUILD_MESSAGES)
-        .application_id(application_id)
-        .event_handler(handler)
-        .await
-        .expect("Error creating client");
+    let mut client = Client::builder(
+        token,
+        GatewayIntents::GUILD_MESSAGES
+            | GatewayIntents::GUILD_MESSAGE_REACTIONS
+            | GatewayIntents::MESSAGE_CONTENT,
+    )
+    .application_id(application_id)
+    .event_handler(handler)
+    .await
+    .expect("Error creating client");
 
     if let Err(why) = client.start().await {
         println!("An error occurred while running the client: {:?}", why);

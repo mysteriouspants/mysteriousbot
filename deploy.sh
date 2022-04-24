@@ -5,7 +5,7 @@ rust_in_docker() {
     -u $(id -u):$(id -g) \
     -v $(pwd):/src:Z \
     -w /src \
-    rust:1.58.1 \
+    rust:1.60.0 \
     $@
 }
 

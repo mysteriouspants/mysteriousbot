@@ -1,3 +1,4 @@
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use snafu::{ResultExt, Snafu};
 use std::{collections::HashMap, num::ParseIntError, str::FromStr};
@@ -59,6 +60,7 @@ pub struct GuildConfig {
     /// sent by a specific individual with a specific emoji. This too is
     /// for the lulz.
     pub autoemojis: Vec<AutoEmojiConfig>,
+    pub autoresponders: Vec<AutoResponderConfig>,
 }
 
 /// Configures how the mysterious bot will behave in a specific guild.
@@ -71,6 +73,7 @@ struct SerializedGuildConfig {
     /// sent by a specific individual with a specific emoji. This too is
     /// for the lulz.
     autoemojis: Option<Vec<AutoEmojiConfig>>,
+    autoresponders: Option<Vec<AutoResponderConfig>>,
 }
 
 impl SerializedGuildConfig {
@@ -78,6 +81,7 @@ impl SerializedGuildConfig {
         GuildConfig {
             slash_responders: self.slash_responders.unwrap_or_else(|| Vec::default()),
             autoemojis: self.autoemojis.unwrap_or_else(|| Vec::default()),
+            autoresponders: self.autoresponders.unwrap_or_else(|| Vec::default()),
         }
     }
 }
@@ -93,15 +97,28 @@ pub struct SlashResponderConfig {
     pub response: String,
 }
 
-/// The trigger for an auto-emoji.
+/// The trigger for a behavior.
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
-pub enum AutoEmojiTrigger {
+pub enum AutoTrigger {
     /// Trigger when someone is mentioned, eg `Let's go bug @P33ky!`.
     Mention(u64),
     /// Trigger when someone says something, eg any time Skorp says
     /// anything.
     Message(u64),
+    /// Trigger when anything matches this regex.
+    #[serde(with = "serde_regex")]
+    Match(Regex),
+}
+
+/// Reusable filter for allowing behavior only in or never in specific
+/// channels.
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ChannelFilter {
+    /// Do not automatically put an emoji reaction in these channels.
+    pub ignore_channels: Option<Vec<u64>>,
+    /// When present only react in these channels.
+    pub only_in_channels: Option<Vec<u64>>,
 }
 
 /// Automatically reacts to messages with emojis. This can be really
@@ -109,14 +126,25 @@ pub enum AutoEmojiTrigger {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct AutoEmojiConfig {
     /// The user to annotate on mention of.
-    pub on: AutoEmojiTrigger,
+    pub on: AutoTrigger,
+    /// Relevant channel filters to restrict the annotation behavior.
+    #[serde(flatten)]
+    pub channel_filter: ChannelFilter,
     /// The twemojis to place, eg `:swedishfish:` here is simply
     /// `swedishfish`.
     pub twemojis: Vec<String>,
-    /// Do not automatically put an emoji reaction in these channels.
-    pub ignore_channels: Option<Vec<u64>>,
-    /// When present only react in these channels.
-    pub only_in_channels: Option<Vec<u64>>,
+}
+
+/// A simple responder which replies to a message.
+#[derive(Debug, Deserialize, Serialize)]
+pub struct AutoResponderConfig {
+    /// The trigger which initiates the reply.
+    pub on: AutoTrigger,
+    /// Relevant channel filters to restrict the responder.
+    #[serde(flatten)]
+    pub channel_filter: ChannelFilter,
+    /// The message to reply with.
+    pub message: String,
 }
 
 #[cfg(test)]

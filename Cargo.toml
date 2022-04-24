@@ -16,6 +16,7 @@ log = "0.4"
 mysterious_cache = { git = "https://github.com/mysteriouspants/mysterious_cache" }
 regex = "1.5"
 serde = { version = "1.0", features = [ "derive" ] }
+serde_regex = "1.1"
 serenity = { version = "0.11", default-features = false, features = [ "builder", "cache", "client", "gateway", "http", "model", "utils", "rustls_backend", "unstable_discord_api" ] }
 snafu = "0.7.0"
 tokio = { version = "1.17", features = [ "macros", "rt", "rt-multi-thread" ] }
