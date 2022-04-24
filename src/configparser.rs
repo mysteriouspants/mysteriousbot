@@ -1,7 +1,7 @@
-use std::{collections::HashMap, num::ParseIntError, str::FromStr};
 use serde::{Deserialize, Serialize};
+use snafu::{ResultExt, Snafu};
+use std::{collections::HashMap, num::ParseIntError, str::FromStr};
 use toml::de::Error as TomlError;
-use thiserror::Error;
 
 /// Configures the mysterious bot.
 #[derive(Debug)]
@@ -11,25 +11,35 @@ pub struct Config {
 }
 
 impl FromStr for Config {
-    type Err = ConfigFromStrError;
+    type Err = Error;
     fn from_str(value: &str) -> Result<Self, Self::Err> {
-        let sc: SerializedConfig = toml::from_str(value)?;
+        let sc: SerializedConfig = toml::from_str(value).with_context(|_| TomlSnafu {
+            string: value.to_owned(),
+        })?;
         let mut guilds = HashMap::new();
 
         for (k, v) in sc.guilds.into_iter() {
-            guilds.insert(k.parse()?, v.to_guild_config());
+            guilds.insert(
+                k.parse().with_context(|_| NonIntegerGuildIdSnafu {
+                    string: k.to_owned(),
+                })?,
+                v.to_guild_config(),
+            );
         }
 
-        Ok(Config{ guilds })
+        Ok(Config { guilds })
     }
 }
 
-#[derive(Debug, Error)]
-pub enum ConfigFromStrError {
-    #[error("Failed to parse TOML with error {0:?}")]
-    Toml(#[from] TomlError),
-    #[error("Guild ID {0:?} is not an integer")]
-    NonintegerGuildId(#[from] ParseIntError),
+#[derive(Debug, Snafu)]
+pub enum Error {
+    #[snafu(display("Failed to parse {string} as TOML with error {source:?}"))]
+    Toml { string: String, source: TomlError },
+    #[snafu(display("{string} is not an integer and cannot be interpreted as a Guild ID"))]
+    NonIntegerGuildId {
+        string: String,
+        source: ParseIntError,
+    },
 }
 
 /// Configures the mysterious bot.
@@ -67,7 +77,7 @@ impl SerializedGuildConfig {
     fn to_guild_config(self) -> GuildConfig {
         GuildConfig {
             slash_responders: self.slash_responders.unwrap_or_else(|| Vec::default()),
-            autoemojis: self.autoemojis.unwrap_or_else(|| Vec::default())
+            autoemojis: self.autoemojis.unwrap_or_else(|| Vec::default()),
         }
     }
 }
@@ -117,9 +127,8 @@ mod tests {
 
     #[test]
     fn config_is_valid() {
-        let config = Config::from_str(
-            &read_to_string("config/mysteriousbot.toml").unwrap()
-        ).unwrap();
+        let config =
+            Config::from_str(&read_to_string("config/mysteriousbot.toml").unwrap()).unwrap();
         println!("{:?}", config);
     }
 }
