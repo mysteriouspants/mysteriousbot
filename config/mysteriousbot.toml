@@ -21,7 +21,7 @@ twemojis = [ "swedishfish"]
 only_in_channels = [ 732783069823762453 ]
 
 [[guilds.728474842877263902.autoresponders]]
-on = { match = "\\b(\\x66\\x61\\x70|\\x6d\\x61\\x73\\x74\\x75\\x72\\x62\\x61\\x74\\x65|\\x63\\x75\\x6d)\\b" }
+on = { match = "\\b(\\x66\\x61\\x70|\\x6d\\x61\\x73\\x74\\x75\\x72\\x62\\x61\\x74\\x65|\\x63\\x75\\x6d|\\x77\\x61\\x6e\\x6b)\\b" }
 message = "https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4"
 
 # iDevGames
@@ -77,8 +77,32 @@ twemojis = [ "_pepetoilet_" ]
 only_in_channels = [ 874511358668972093 ]
 
 [[guilds.792112275473301576.autoresponders]]
-on = { match = "\\b(\\x66\\x61\\x70|\\x6d\\x61\\x73\\x74\\x75\\x72\\x62\\x61\\x74\\x65|\\x63\\x75\\x6d)\\b" }
+on = { match = "(?i)\\b(\\x66\\x61\\x70|\\x6d\\x61\\x73\\x74\\x75\\x72\\x62\\x61\\x74\\x65|\\x63\\x75\\x6d|\\x77\\x61\\x6e\\x6b)\\b" }
 message = "https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4"
+#                    #corp-chat          # industry          #commerce-shopping  #transports-r-us    #token-proof        #keep-star          #general            #shitpost-central   #games              #music              #food-related       #eve-news           #wheres-daddy-today
+only_in_channels = [ 792116253954932776, 792696740234395648, 792116632872419338, 881323330425212969, 917563911790800936, 918485978128187423, 792112359215726602, 874511358668972093, 803049246043275294, 832285540019077180, 859993967319842847, 878233071546171422, 872020091976433674 ]
+
+[[guilds.792112275473301576.autoresponders]]
+on = { match = "(?i)\\b(nascar)\\b" }
+message = "https://cdn.discordapp.com/attachments/874511358668972093/958491000555323462/Image.gif"
+#                    #corp-chat          # industry          #commerce-shopping  #transports-r-us    #token-proof        #keep-star          #general            #shitpost-central   #games              #music              #food-related       #eve-news           #wheres-daddy-today
+only_in_channels = [ 792116253954932776, 792696740234395648, 792116632872419338, 881323330425212969, 917563911790800936, 918485978128187423, 792112359215726602, 874511358668972093, 803049246043275294, 832285540019077180, 859993967319842847, 878233071546171422, 872020091976433674 ]
+
+[[guilds.792112275473301576.autoresponders]]
+on = { match = "(?i)\\b(finland)\\b" }
+message = "https://cdn.discordapp.com/attachments/732783069823762453/968032292725469184/unknown.png"
+#                    #corp-chat          # industry          #commerce-shopping  #transports-r-us    #token-proof        #keep-star          #general            #shitpost-central   #games              #music              #food-related       #eve-news           #wheres-daddy-today
+only_in_channels = [ 792116253954932776, 792696740234395648, 792116632872419338, 881323330425212969, 917563911790800936, 918485978128187423, 792112359215726602, 874511358668972093, 803049246043275294, 832285540019077180, 859993967319842847, 878233071546171422, 872020091976433674 ]
+
+[[guilds.792112275473301576.autoresponders]]
+on = { match = "(?i)\\b(007|james bond)\\b" }
+message = "https://cdn.discordapp.com/attachments/874511358668972093/965119313843458048/image0.jpg"
+#                    #corp-chat          # industry          #commerce-shopping  #transports-r-us    #token-proof        #keep-star          #general            #shitpost-central   #games              #music              #food-related       #eve-news           #wheres-daddy-today
+only_in_channels = [ 792116253954932776, 792696740234395648, 792116632872419338, 881323330425212969, 917563911790800936, 918485978128187423, 792112359215726602, 874511358668972093, 803049246043275294, 832285540019077180, 859993967319842847, 878233071546171422, 872020091976433674 ]
+
+[[guilds.792112275473301576.autoresponders]]
+on = { match = "(?i)\\b(nag|naglfar)\\b" }
+message = "https://cdn.discordapp.com/attachments/792116253954932776/968738866532085791/unknown.png"
 #                    #corp-chat          # industry          #commerce-shopping  #transports-r-us    #token-proof        #keep-star          #general            #shitpost-central   #games              #music              #food-related       #eve-news           #wheres-daddy-today
 only_in_channels = [ 792116253954932776, 792696740234395648, 792116632872419338, 881323330425212969, 917563911790800936, 918485978128187423, 792112359215726602, 874511358668972093, 803049246043275294, 832285540019077180, 859993967319842847, 878233071546171422, 872020091976433674 ]
 
