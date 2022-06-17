@@ -1,0 +1,96 @@
+---
+guilds:
+  # bot testing playground
+  728474842877263902:
+    commands:
+      - &wednesday
+        alias: wednesday
+        description: "it is wednesday my doods"
+        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/963863870387142717/its_wednesday_my_doods.mp4"
+      - &friday
+        alias: friday
+        description: "mufasa, it's friday then"
+        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/964587359637233674/Mufasa-_its_friday_then.mp4"
+      - &bus
+        alias: bus
+        description: another one rides the bus
+        reply_messages: |-
+          :musical_score::musical_note: Another one rides the bus! :notes:
+    autoresponders:
+      # respond to certain messages with the famous copypasta for comedy
+      - &wank
+        message_matches: "\\b(wank|cum|masturbate)\\b"
+        reply_messages: "https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4"
+        cooldown: &thirtyminutes 1800
+  
+  # RECON/B0T
+  499288051290210312:
+    commands:
+      - *wednesday
+      - *friday
+    autoresponders:
+      - user_message: 139425197118849025 # Skorpion Medion
+        twemojis: swedishfish
+        only_in_channels:
+          - 499363186957352970 #alliance
+          - 499363309070319616 #nsfw
+            
+  # Aurora Dynamics
+  792112275473301576:
+    commands:
+      - *wednesday
+      - *friday
+      - *bus
+    autoresponders:
+      # - *wank
+      - user_mentioned: 261559920485335040 # P33ky
+        twemojis: PingBad
+        only_in_channels: &a0ra_member_channels
+          - 792116253954932776 #corp-chat
+          - 792696740234395648 #industry
+          - 792116632872419338 #commerce-shopping
+          - 881323330425212969 #transports-r-us
+          - 917563911790800936 #token-proof
+          - 918485978128187423 #kreep-star
+          - 792112359215726602 #general
+          - 874511358668972093 #shitpost-central
+          - 803049246043275294 #games
+          - 832285540019077180 #music
+          - 859993967319842847 #food-related
+          - 878233071546171422 #eve-news
+          - 872020091976433674 #wheres-daddy-today 
+      - user_message: 249051133987913728 # Necrothitude
+        twemojis: _pepetoilet_
+        only_in_channels: 874511358668972093 #shitpost-central
+      - message_matches: "(?i)\\b(nascar)\\b"
+        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/958491000555323462/Image.gif"
+        only_in_channels: *a0ra_member_channels
+        cooldown: *thirtyminutes
+      - message_matches: "(?i)\\b(finland)\\b"
+        reply_messages: "https://cdn.discordapp.com/attachments/732783069823762453/968032292725469184/unknown.png"
+        only_in_channels: *a0ra_member_channels
+        cooldown: *thirtyminutes
+      - message_matches: "(?i)\\b(007|james bond)\\b"
+        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/965119313843458048/image0.jpg"
+        only_in_channels: *a0ra_member_channels
+        cooldown: *thirtyminutes
+      - message_matches: "(?i)\\b(nag|naglfar)\\b"
+        reply_messages: "https://cdn.discordapp.com/attachments/792116253954932776/968738866532085791/unknown.png"
+        only_in_channels: *a0ra_member_channels
+        cooldown: *thirtyminutes
+
+  # iDevGames
+  488890763720130560:
+    commands:
+      - *wednesday
+      - *friday
+      - alias: moof
+        description: Clarus says Moof!
+        reply_messages: https://discord.com/channels/728474842877263902/951165912164233256/987160233703006249
+    autoresponders:
+      - message_matches: "(?i)\\b(meep)\\b"
+        twemojis: clarus
+
+
+
+          
