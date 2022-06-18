@@ -10,7 +10,12 @@ guilds:
       - &friday
         alias: friday
         description: "mufasa, it's friday then"
-        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/964587359637233674/Mufasa-_its_friday_then.mp4"
+        reply_messages:
+          - "https://cdn.discordapp.com/attachments/874511358668972093/964587359637233674/Mufasa-_its_friday_then.mp4"
+          - "https://cdn.discordapp.com/attachments/874511358668972093/987461620148109352/redditsave.com_maybe_maybe_maybe-zfk0quiebfw61.mp4"
+          - "https://cdn.discordapp.com/attachments/874511358668972093/984888605426221056/09b0f74e14017467a5d7f990229e96d2.mp4"
+          - "https://cdn.discordapp.com/attachments/874511358668972093/984888604855762974/b9f2ae6cb8642cca7e306aa7ca66d677.mp4"
+          - "https://cdn.discordapp.com/attachments/874511358668972093/984888603580706838/WhatsApp_Video_2021-03-05_at_10.23.54.mp4"
       - &bus
         alias: bus
         description: another one rides the bus
@@ -25,6 +30,10 @@ guilds:
       - &clarus 
         message_matches: ":clarus:"
         reply_messages: "Moof!"
+        cooldown: 300
+      - &minecraft
+        message_matches: "\\b(minecraft)\\b"
+        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/959864645697536121/Video.mov"
         cooldown: *thirtyminutes
   
   # RECON/B0T
@@ -82,6 +91,14 @@ guilds:
         reply_messages: "https://cdn.discordapp.com/attachments/792116253954932776/968738866532085791/unknown.png"
         only_in_channels: *a0ra_member_channels
         cooldown: *thirtyminutes
+      - message_matches: "\\b(minecraft)\\b"
+        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/959864645697536121/Video.mov"
+        cooldown: *thirtyminutes
+        only_in_channels: *a0ra_member_channels
+      - message_matches: ":poop:"
+        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/964602000710959215/Video.mov"
+        cooldown: *thirtyminutes
+        only_in_channels: *a0ra_member_channels
 
   # iDevGames
   488890763720130560:
@@ -94,5 +111,9 @@ guilds:
         reply_messages: https://cdn.discordapp.com/attachments/951165912164233256/987160233510047854/The.Dogcow.moof.wav
     autoresponders:
       - *clarus
+      - *minecraft
       - message_matches: "(?i)\\b(meep)\\b"
         twemojis: clarus
+      - message_matches: ":poop:"
+        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/964602000710959215/Video.mov"
+        cooldown: *thirtyminutes
