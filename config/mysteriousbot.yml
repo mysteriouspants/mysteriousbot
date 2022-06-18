@@ -22,6 +22,10 @@ guilds:
         message_matches: "\\b(wank|cum|masturbate)\\b"
         reply_messages: "https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4"
         cooldown: &thirtyminutes 1800
+      - &clarus 
+        message_matches: ":clarus:"
+        reply_messages: "Moof!"
+        cooldown: *thirtyminutes
   
   # RECON/B0T
   499288051290210312:
@@ -84,13 +88,11 @@ guilds:
     commands:
       - *wednesday
       - *friday
+      - *bus
       - alias: moof
         description: Clarus says Moof!
-        reply_messages: https://discord.com/channels/728474842877263902/951165912164233256/987160233703006249
+        reply_messages: https://cdn.discordapp.com/attachments/951165912164233256/987160233510047854/The.Dogcow.moof.wav
     autoresponders:
+      - *clarus
       - message_matches: "(?i)\\b(meep)\\b"
         twemojis: clarus
-
-
-
-          
