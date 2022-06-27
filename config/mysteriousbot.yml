@@ -112,7 +112,7 @@ guilds:
     autoresponders:
       - *clarus
       - *minecraft
-      - message_matches: "(?i)(\\b|_)(meep)\\b"
+      - message_matches: "(?i)(\\b|_)(meep)(\\b|_)"
         twemojis: clarus
       - message_matches: ":poop:"
         reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/964602000710959215/Video.mov"
