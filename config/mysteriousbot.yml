@@ -99,6 +99,10 @@ guilds:
         reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/964602000710959215/Video.mov"
         cooldown: *thirtyminutes
         only_in_channels: *a0ra_member_channels
+      - message_matches: "(?i)\\b(damn|shit|fuck|ass|asshole|bastard|french|france|gallente|dick|bitch|fucker|bugger|cunt)\\b"
+        reply_messages: "You have been fined 1 ISK for violating the Verbal Morality Statute"
+        cooldown: 0
+        only_in_channels: *a0ra_member_channels
 
   # iDevGames
   488890763720130560:
