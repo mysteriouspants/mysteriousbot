@@ -47,6 +47,9 @@ if [ $? -eq 0 ]; then
     ssh ${SERVICE_USER_NAME}@${SERVICE_HOST} mkdir -p ${SERVICE_USER_DIR}/db
   fi
 
+  # pull down the production db as a backup - yay sqlite
+  rsync -avzr ${SERVICE_USER_NAME}@${SERVICE_HOST}:${SERVICE_USER_DIR}/db db/db_$(date +%s)
+
   rsync -avzr config/mysteriousbot.yml ${SERVICE_USER_NAME}@${SERVICE_HOST}:${SERVICE_USER_DIR}/config/mysteriousbot.yml
 
   if [[ $fast == false ]]; then

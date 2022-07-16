@@ -13,7 +13,7 @@ use serenity::{
 };
 use tokio::sync::Mutex;
 
-use crate::emojicache::EmojiCache;
+use crate::{counter::CounterFactory, emojicache::EmojiCache};
 
 #[derive(Debug, Deserialize)]
 pub struct Autoresponder {
@@ -29,13 +29,14 @@ impl Autoresponder {
     pub async fn handle(
         &self,
         emojicache: &EmojiCache,
+        counter_factory: &CounterFactory,
         context: &Context,
         message: &Message,
         guild_id: &GuildId,
     ) {
         if self.trigger.should_run(context, message) && self.filter.should_run(message).await {
             self.action
-                .run(emojicache, context, guild_id, message)
+                .run(emojicache, counter_factory, context, guild_id, message)
                 .await;
         }
     }
@@ -131,16 +132,32 @@ pub struct AutoresponderAction {
     #[serde(default)]
     #[serde_as(as = "OneOrMany<_, PreferOne>")]
     reply_messages: Vec<String>,
+    #[serde(default)]
+    #[serde_as(as = "OneOrMany<_, PreferOne>")]
+    counter: Vec<String>,
 }
 
 impl AutoresponderAction {
     async fn run(
         &self,
         emojicache: &EmojiCache,
+        counter_factory: &CounterFactory,
         context: &Context,
         guild_id: &GuildId,
         message: &Message,
     ) {
+        for counter in &self.counter {
+            let counter = counter_factory.make_counter(&counter);
+            if let Err(e) = counter.increment(message.author.id) {
+                log::error!(
+                    "Failed to increment counter {:?} for user {} with error {:#?}",
+                    counter,
+                    message.author.id.0,
+                    e
+                );
+            }
+        }
+
         for twemoji in &self.twemojis {
             if let Ok(Some(emoji)) = emojicache.get_emoji(&context, guild_id, &twemoji).await {
                 if let Err(why) = message.react(context, emoji).await {

@@ -27,6 +27,7 @@ guilds:
         message_matches: "\\b(wank|cum|masturbate)\\b"
         reply_messages: "https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4"
         cooldown: &thirtyminutes 1800
+        counter: test_counter
       - &clarus 
         message_matches: ":clarus:"
         reply_messages: "Moof!"
@@ -58,6 +59,7 @@ guilds:
       # - *wank
       - user_mentioned: 261559920485335040 # P33ky
         twemojis: PingBad
+        counter: peeky_ping_count
         only_in_channels: &a0ra_member_channels
           - 792116253954932776 #corp-chat
           - 792696740234395648 #industry
@@ -91,18 +93,27 @@ guilds:
         reply_messages: "https://cdn.discordapp.com/attachments/792116253954932776/968738866532085791/unknown.png"
         only_in_channels: *a0ra_member_channels
         cooldown: *thirtyminutes
-      - message_matches: "\\b(minecraft)\\b"
+      - message_matches: "(?i)\\b(minecraft)\\b"
         reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/959864645697536121/Video.mov"
         cooldown: *thirtyminutes
         only_in_channels: *a0ra_member_channels
-      - message_matches: ":poop:"
+      - message_matches: "(?i):poop:"
         reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/964602000710959215/Video.mov"
         cooldown: *thirtyminutes
         only_in_channels: *a0ra_member_channels
-      - message_matches: "(?i)\\b(damn|shit|fuck|ass|asshole|bastard|french|france|gallente|dick|bitch|fucker|bugger|cunt)\\b"
+      - message_matches:
+          # standard american
+          - "(?i)\\b(damn|shit|fuck|ass|asshole|bastard|bitch|fucker|cuck|motherfucker|slut|whore|kurwa|pussy)\\b"
+          # chiefly british
+          - "(?i)\\b(cunt|twat|bugger|wanker|bor+is johnson|arse|arsehole|cuntbag)\\b"
+          # CJ and Killer said these, I had no idea
+          - "(?i)\\b(gash|cheffed|pissflaps|shitbag|cocknose|wankstain|arsebadger|jizz|cock|cum|thundercunt|nonce|cumwipe|minger)\\b"
+          # EVE Online/meme words
+          - "(?i)\\b(french|france|gallente|dick|dickhead|mittani)\\b"
         reply_messages: "You have been fined 1 ISK for violating the Verbal Morality Statute"
         cooldown: 0
         only_in_channels: *a0ra_member_channels
+        counter: verbal_morality_statute
 
   # iDevGames
   488890763720130560:

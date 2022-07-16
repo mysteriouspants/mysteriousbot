@@ -1,10 +1,14 @@
+use r2d2::Pool;
+use r2d2_sqlite::SqliteConnectionManager;
 use serenity::{client::{Context, EventHandler}, model::{channel::Message, interactions::{Interaction, application_command::ApplicationCommand}, gateway::Ready}};
 
-use crate::{config::Config, emojicache::EmojiCache};
+use crate::{config::Config, emojicache::EmojiCache, counter::CounterFactory};
 
 pub struct Handler {
     pub config: Config,
     pub emoji_cache: EmojiCache,
+    pub pool: Pool<SqliteConnectionManager>,
+    pub counter_factory: CounterFactory,
 }
 
 #[serenity::async_trait]
@@ -39,7 +43,7 @@ impl EventHandler for Handler {
         };
 
         for autoresponder in &guild_config.autoresponders {
-            autoresponder.handle(&self.emoji_cache, &context, &message, &guild_id).await;
+            autoresponder.handle(&self.emoji_cache, &self.counter_factory, &context, &message, &guild_id).await;
         }
     }
 

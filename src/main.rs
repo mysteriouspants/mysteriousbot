@@ -1,15 +1,16 @@
+use crate::handler::Handler;
+use counter::CounterFactory;
 use dotenv::dotenv;
 use emojicache::EmojiCache;
-use serenity::{
-    client::Client,
-    model::gateway::GatewayIntents,
-};
+use r2d2::Pool;
+use r2d2_sqlite::SqliteConnectionManager;
+use serenity::{client::Client, model::gateway::GatewayIntents};
 use std::{env, fs::read_to_string};
-use crate::handler::Handler;
 
 mod autoresponder;
 mod command;
 mod config;
+mod counter;
 mod emojicache;
 mod handler;
 
@@ -25,6 +26,9 @@ async fn main() {
         &env::var("DISCORD_TOKEN").expect("DISCORD_TOKEN environment variable is unset, exiting");
     let config_file =
         &env::var("MYSTERIOUSBOT_CONFIG").unwrap_or("./config/mysteriousbot.yml".to_owned());
+    let db_file = &env::var("MYSTERIOUSBOT_DB").unwrap_or("./db/mysteriousbot.sqlite3".to_owned());
+    let pool = Pool::new(SqliteConnectionManager::file(db_file))
+        .expect("Couldn't put database in the pool. Party foul.");
     let handler = Handler {
         config: serde_yaml::from_str(
             &read_to_string(config_file)
@@ -32,6 +36,8 @@ async fn main() {
         )
         .expect("Config could not be parsed"),
         emoji_cache: EmojiCache::new(),
+        counter_factory: CounterFactory::new(pool.clone()).expect("Cannot create counter factory"),
+        pool,
     };
     let mut client = Client::builder(
         token,
