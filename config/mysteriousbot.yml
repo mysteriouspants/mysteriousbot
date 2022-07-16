@@ -21,6 +21,9 @@ guilds:
         description: another one rides the bus
         reply_messages: |-
           :musical_score::musical_note: Another one rides the bus! :notes:
+      - alias: leaderboard
+        description: prints a leaderboard
+        counter_leaderboard: test_counter
     autoresponders:
       # respond to certain messages with the famous copypasta for comedy
       - &wank
@@ -55,6 +58,12 @@ guilds:
       - *wednesday
       - *friday
       - *bus
+      - alias: pingboard
+        description: who has pinged our tame ceo the most?
+        counter_leaderboard: peeky_ping_count
+      - alias: curseboard
+        description: do you kiss your mother with that mouth?
+        counter_leaderboard: verbal_morality_statute
     autoresponders:
       # - *wank
       - user_mentioned: 261559920485335040 # P33ky

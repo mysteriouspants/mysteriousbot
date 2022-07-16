@@ -100,6 +100,47 @@ impl Counter {
         Ok(())
     }
 
+    /// The top counts for this counter.
+    pub fn top_counts(&self, subject: UserId) -> Result<Vec<(UserId, u64)>> {
+        let mut connection = self.get_connection()?;
+        let tx = connection.transaction().context(DbSnafu)?;
+
+        // get the top ten
+        let mut top_counts = {
+            let mut select = tx
+                .prepare(
+                    "SELECT user_id, count FROM counters \
+                WHERE counter = ? \
+                ORDER BY count DESC \
+                LIMIT 10;",
+                )
+                .context(DbSnafu)?;
+            let rows = select
+                .query_map([&self.counter_id], |row| {
+                    Ok((UserId(row.get(0)?), row.get::<_, u64>(1)?))
+                })
+                .context(DbSnafu)?;
+
+            let mut top_counts = vec![];
+
+            for row in rows {
+                top_counts.push(row.context(DbSnafu)?);
+            }
+
+            top_counts
+        };
+
+        // if the subject isn't in the top ten, at least let them know
+        // where they stand
+        if !top_counts.iter().any(|tuple| tuple.0 == subject) {
+            top_counts.push((subject, self.get_count(&tx, subject)?));
+        }
+
+        tx.commit().context(DbSnafu)?;
+
+        Ok(top_counts)
+    }
+
     /// Gets the count on a given connection for a subject.
     fn get_count(&self, connection: &Connection, subject: UserId) -> Result<u64> {
         Ok(
@@ -159,10 +200,19 @@ mod tests {
         let pool = memory_pool();
         let counter_factory = CounterFactory::new(pool).unwrap();
         let counter = counter_factory.make_counter("my_counter");
-        let user_id = UserId(0);
+        let joe = UserId(0);
 
-        assert!(matches!(counter.get(user_id), Ok(0)));
-        assert!(matches!(counter.increment(user_id), Ok(1)));
-        assert!(matches!(counter.decrement(user_id), Ok(0)));
+        assert!(matches!(counter.get(joe), Ok(0)));
+        assert!(matches!(counter.increment(joe), Ok(1)));
+        assert!(matches!(counter.decrement(joe), Ok(0)));
+        assert!(matches!(counter.increment(joe), Ok(1)));
+
+        let bob = UserId(1);
+
+        assert!(matches!(counter.get(bob), Ok(0)));
+        assert!(matches!(counter.increment(bob), Ok(1)));
+        assert!(matches!(counter.decrement(bob), Ok(0)));
+
+        assert!(matches!(counter.get(joe), Ok(1)));
     }
 }

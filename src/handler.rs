@@ -28,7 +28,7 @@ impl EventHandler for Handler {
         };
 
         if let Some(c) = guild_config.commands.iter().find(|c| c.alias == command.data.name.as_str()) {
-            c.handle(&command, ctx).await;
+            c.handle(&command, ctx, &self.counter_factory).await;
         }
     }
 
