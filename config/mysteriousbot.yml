@@ -27,7 +27,7 @@ guilds:
     autoresponders:
       # respond to certain messages with the famous copypasta for comedy
       - &wank
-        message_matches: "\\b(wank|cum|masturbate)\\b"
+        message_matches: "(?i)\\b(wank|cum|masturbate)\\b"
         reply_messages: "https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4"
         cooldown: &thirtyminutes 1800
         counter: test_counter
@@ -36,8 +36,18 @@ guilds:
         reply_messages: "Moof!"
         cooldown: 300
       - &minecraft
-        message_matches: "\\b(minecraft)\\b"
+        message_matches: "(?i)\\b(minecraft)\\b"
         reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/959864645697536121/Video.mov"
+        cooldown: *thirtyminutes
+      - &boats
+        message_matches: "(?i)\\b(boats)\\b"
+        reply_message:
+          - https://cdn.discordapp.com/attachments/951165912164233256/999902514046578719/i_like_boats.mp4
+          - https://cdn.discordapp.com/attachments/951165912164233256/999902515141279764/i_like_boats_window_crash.mp4
+        cooldown: *thirtyminutes
+      - &hair
+        message_matches: "(?i)\\b(hair)\\b"
+        reply_message: https://cdn.discordapp.com/attachments/951165912164233256/999902514533126174/quinnypig_is_the_prettiest_pony.mp4
         cooldown: *thirtyminutes
   
   # RECON/B0T
@@ -110,9 +120,21 @@ guilds:
         reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/964602000710959215/Video.mov"
         cooldown: *thirtyminutes
         only_in_channels: *a0ra_member_channels
+      - &boats
+        message_matches: "(?i)\\b(boats)\\b"
+        reply_message:
+          - https://cdn.discordapp.com/attachments/951165912164233256/999902514046578719/i_like_boats.mp4
+          - https://cdn.discordapp.com/attachments/951165912164233256/999902515141279764/i_like_boats_window_crash.mp4
+        cooldown: *thirtyminutes
+        only_in_channels: *a0ra_member_channels
+      - &hair
+        message_matches: "(?i)\\b(hair)\\b"
+        reply_message: https://cdn.discordapp.com/attachments/951165912164233256/999902514533126174/quinnypig_is_the_prettiest_pony.mp4
+        cooldown: *thirtyminutes
+        only_in_channels: *a0ra_member_channels
       - message_matches:
           # standard american
-          - "(?i)\\b(damn|shit|fuck|ass|asshole|bastard|bitch|fucker|cuck|motherfucker|slut|whore|kurwa|pussy)\\b"
+          - "(?i)\\b(damn|shit|fuck|fucking|ass|asshole|bastard|bitch|fucker|cuck|motherfucker|slut|whore|kurwa|pussy)\\b"
           # chiefly british
           - "(?i)\\b(cunt|twat|bugger|wanker|bor+is johnson|arse|arsehole|cuntbag)\\b"
           # CJ and Killer said these, I had no idea
@@ -135,9 +157,5 @@ guilds:
         reply_messages: https://cdn.discordapp.com/attachments/951165912164233256/987160233510047854/The.Dogcow.moof.wav
     autoresponders:
       - *clarus
-      - *minecraft
       - message_matches: "(?i)(\\b|_)(meep)(\\b|_)"
         twemojis: clarus
-      - message_matches: ":poop:"
-        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/964602000710959215/Video.mov"
-        cooldown: *thirtyminutes

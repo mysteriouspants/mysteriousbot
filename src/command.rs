@@ -28,7 +28,7 @@ impl Command {
         ctx: Context,
         counter_factory: &CounterFactory,
     ) {
-        if self.reply_messages.is_empty() {
+        if !self.reply_messages.is_empty() {
             handle_reply_message(&ctx, interaction, &self.reply_messages).await;
         }
 
