@@ -6,7 +6,12 @@ guilds:
       - &wednesday
         alias: wednesday
         description: "it is wednesday my doods"
-        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/963863870387142717/its_wednesday_my_doods.mp4"
+        reply_messages:
+          - https://cdn.discordapp.com/attachments/874511358668972093/963863870387142717/its_wednesday_my_doods.mp4
+          - https://cdn.discordapp.com/attachments/874511358668972093/991766704097079306/05a55213c600498578a6a188a9fd48ba.mp4
+          - https://cdn.discordapp.com/attachments/874511358668972093/989242891014664192/66adb14c6961d4fd3e1b0564f037a9a8.mp4
+          - https://cdn.discordapp.com/attachments/874511358668972093/989242890637152336/09de45ecffbfb78eb88451a2601dd8c0.mp4
+          - https://cdn.discordapp.com/attachments/874511358668972093/989242890310017024/ce5fa91d241b288371f0a4ff5771058f.mp4
       - &friday
         alias: friday
         description: "mufasa, it's friday then"
