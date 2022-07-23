@@ -133,6 +133,7 @@ impl Counter {
         // if the subject isn't in the top ten, at least let them know
         // where they stand
         if !top_counts.iter().any(|tuple| tuple.0 == subject) {
+            top_counts.pop();
             top_counts.push((subject, self.get_count(&tx, subject)?));
         }
 

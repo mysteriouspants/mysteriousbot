@@ -29,6 +29,12 @@ guilds:
       - alias: leaderboard
         description: prints a leaderboard
         counter_leaderboard: test_counter
+      - alias: pingboard
+        description: who has pinged our tame ceo the most?
+        counter_leaderboard: peeky_ping_count
+      - alias: curseboard
+        description: do you kiss your mother with that mouth?
+        counter_leaderboard: verbal_morality_statute
     autoresponders:
       # respond to certain messages with the famous copypasta for comedy
       - &wank
@@ -139,7 +145,7 @@ guilds:
         only_in_channels: *a0ra_member_channels
       - message_matches:
           # standard american
-          - "(?i)\\b(damn|shit|fuck|fucking|ass|asshole|bastard|bitch|fucker|cuck|motherfucker|slut|whore|kurwa|pussy)\\b"
+          - "(?i)\\b(damn|shit|shitty|fuck|fucking|ass|asshole|bastard|bitch|fucker|cuck|motherfucker|slut|whore|kurwa|pussy)\\b"
           # chiefly british
           - "(?i)\\b(cunt|twat|bugger|wanker|bor+is johnson|arse|arsehole|cuntbag)\\b"
           # CJ and Killer said these, I had no idea
