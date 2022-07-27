@@ -12,6 +12,7 @@ guilds:
           - https://cdn.discordapp.com/attachments/874511358668972093/989242891014664192/66adb14c6961d4fd3e1b0564f037a9a8.mp4
           - https://cdn.discordapp.com/attachments/874511358668972093/989242890637152336/09de45ecffbfb78eb88451a2601dd8c0.mp4
           - https://cdn.discordapp.com/attachments/874511358668972093/989242890310017024/ce5fa91d241b288371f0a4ff5771058f.mp4
+          - https://cdn.discordapp.com/attachments/874511358668972093/1001850949066829844/349e62b82a6b0b0456a116dc0d649662.mp4
       - &friday
         alias: friday
         description: "mufasa, it's friday then"
@@ -79,6 +80,9 @@ guilds:
       - *wednesday
       - *friday
       - *bus
+      - alias: ehehehe
+        description: peeky's diabolical laugh
+        reply_messages: https://cdn.discordapp.com/attachments/792116253954932776/1001842590833975306/Ehehehe_1.mp4
       - alias: pingboard
         description: who has pinged our tame ceo the most?
         counter_leaderboard: peeky_ping_count
