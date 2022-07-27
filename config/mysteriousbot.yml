@@ -147,12 +147,12 @@ guilds:
           # standard american
           - "(?i)\\b(damn|shit|shitty|fuck|fucking|ass|asshole|bastard|bitch|fucker|cuck|motherfucker|slut|whore|kurwa|pussy)\\b"
           # chiefly british
-          - "(?i)\\b(cunt|twat|bugger|wanker|bor+is johnson|arse|arsehole|cuntbag)\\b"
+          - "(?i)\\b(cunt|twat|bugger|wanker|bor+is johnson|arse|arsehole|cuntbag|plonker|prick|bollocks|bint|prat|tosser|pillock|nob|bel+end)\\b"
           # CJ and Killer said these, I had no idea
           - "(?i)\\b(gash|cheffed|pissflaps|shitbag|cocknose|wankstain|arsebadger|jizz|cock|cum|thundercunt|nonce|cumwipe|minger)\\b"
           # EVE Online/meme words
-          - "(?i)\\b(french|france|gallente|dick|dickhead|mittani)\\b"
-        reply_messages: "You have been fined 1 ISK for violating the Verbal Morality Statute"
+          - "(?i)\\b(french|france|gallente|dick|dickhead|mittani|goons?|goonswarm)\\b"
+        twemojis: getsomehelp
         cooldown: 0
         only_in_channels: *a0ra_member_channels
         counter: verbal_morality_statute
