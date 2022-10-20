@@ -18,10 +18,36 @@ guilds:
         description: "mufasa, it's friday then"
         reply_messages:
           - "https://cdn.discordapp.com/attachments/874511358668972093/964587359637233674/Mufasa-_its_friday_then.mp4"
-          - "https://cdn.discordapp.com/attachments/874511358668972093/987461620148109352/redditsave.com_maybe_maybe_maybe-zfk0quiebfw61.mp4"
+          - "https://cdn.discordapp.com/attachments/874511358668972000/987461620148109352/redditsave.com_maybe_maybe_maybe-zfk0quiebfw61.mp4"
           - "https://cdn.discordapp.com/attachments/874511358668972093/984888605426221056/09b0f74e14017467a5d7f990229e96d2.mp4"
           - "https://cdn.discordapp.com/attachments/874511358668972093/984888604855762974/b9f2ae6cb8642cca7e306aa7ca66d677.mp4"
           - "https://cdn.discordapp.com/attachments/874511358668972093/984888603580706838/WhatsApp_Video_2021-03-05_at_10.23.54.mp4"
+      - &freedom
+        alias: freedom
+        description: your freedom-loving meme/video dispener. duplicates expected if you do it too much lol
+        reply_messages:
+          - https://www.youtube.com/watch?v=FHe_VHT4ojo
+          - https://www.youtube.com/watch?v=8b5rIFci5vs
+          - https://www.youtube.com/watch?v=QRlqJFdb6ZY
+          - https://www.youtube.com/watch?v=vUFGWDlVh_Y
+          - https://www.youtube.com/watch?v=D7Yp95BCrJ8
+          - https://www.youtube.com/watch?v=d0Xol9ubNGE
+          - https://www.youtube.com/watch?v=-YJy6r-ZKlE
+          - https://www.youtube.com/watch?v=GceP66tJL60
+          - https://www.youtube.com/watch?v=7Lcx8YtOEfU
+          - https://www.youtube.com/watch?v=LNUMTgxYN4Y
+          - https://www.youtube.com/watch?v=2tXu9s9q1DU
+          - https://www.youtube.com/watch?v=BevT42dGYmo
+          - https://www.youtube.com/watch?v=E-7YboIRv1I
+          - https://www.youtube.com/watch?v=RD9qp9eAzPU
+          - https://www.youtube.com/watch?v=XGcADQdlmCk
+          # Ronald Reagan "Evil Empire" speech
+          - https://www.youtube.com/watch?v=do0x-Egc6oA
+          - https://cdn.discordapp.com/attachments/318603903220318210/1008190981432164352/Russia_and_China_take_notes_bvwa7tqblag91.mp4
+          - https://cdn.discordapp.com/attachments/808536952571297855/1006107344121381004/unknown.png
+          - https://cdn.discordapp.com/attachments/808536952571297855/1004250400158928996/unknown.png
+          - https://cdn.discordapp.com/attachments/951165912164233256/1008225629101101087/IFESFpr.jpg
+          - https://cdn.discordapp.com/attachments/951165912164233256/1008225738232713266/polandball_north_america.png
       - &bus
         alias: bus
         description: another one rides the bus
@@ -52,7 +78,7 @@ guilds:
         reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/959864645697536121/Video.mov"
         cooldown: *thirtyminutes
       - &boats
-        message_matches: "(?i)\\b(boats)\\b"
+        message_matches: "(?i)\\b(boats?|ships?)\\b"
         reply_message:
           - https://cdn.discordapp.com/attachments/951165912164233256/999902514046578719/i_like_boats.mp4
           - https://cdn.discordapp.com/attachments/951165912164233256/999902515141279764/i_like_boats_window_crash.mp4
@@ -67,6 +93,7 @@ guilds:
     commands:
       - *wednesday
       - *friday
+      - *freedom
     autoresponders:
       - user_message: 139425197118849025 # Skorpion Medion
         twemojis: swedishfish
@@ -80,12 +107,13 @@ guilds:
       - *wednesday
       - *friday
       - *bus
+      - *freedom
       - alias: ehehehe
         description: peeky's diabolical laugh
         reply_messages: https://cdn.discordapp.com/attachments/792116253954932776/1001842590833975306/Ehehehe_1.mp4
-      - alias: pingboard
-        description: who has pinged our tame ceo the most?
-        counter_leaderboard: peeky_ping_count
+      # - alias: pingboard
+      #   description: who has pinged our tame ceo the most?
+      #   counter_leaderboard: peeky_ping_count
       - alias: curseboard
         description: do you kiss your mother with that mouth?
         counter_leaderboard: verbal_morality_statute
@@ -136,7 +164,7 @@ guilds:
         cooldown: *thirtyminutes
         only_in_channels: *a0ra_member_channels
       - &boats
-        message_matches: "(?i)\\b(boats)\\b"
+        message_matches: "(?i)\\b(boats?|ships?)\\b"
         reply_message:
           - https://cdn.discordapp.com/attachments/951165912164233256/999902514046578719/i_like_boats.mp4
           - https://cdn.discordapp.com/attachments/951165912164233256/999902515141279764/i_like_boats_window_crash.mp4
@@ -167,6 +195,7 @@ guilds:
       - *wednesday
       - *friday
       - *bus
+      - *freedom
       - alias: moof
         description: Clarus says Moof!
         reply_messages: https://cdn.discordapp.com/attachments/951165912164233256/987160233510047854/The.Dogcow.moof.wav
