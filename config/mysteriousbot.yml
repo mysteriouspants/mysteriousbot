@@ -62,6 +62,17 @@ guilds:
       - alias: curseboard
         description: do you kiss your mother with that mouth?
         counter_leaderboard: verbal_morality_statute
+      - alias: fax
+        description: Give a quarter, get a quote. Probably not what you want.
+        reply_messages:
+          - |
+            **2022-11-12 10:14 AM PST**
+            <TheCire> Ugh I want to get out of bed but it's so cold...
+            <mysteriouspants> Can't poop in bed unless you're Amber Heard.
+          - |
+            **2020-10-01 7:03 PM EST**
+            <NCarter> What it needs first of all is a pair of spatulas jammed into its underside.
+            <NCarter> I've done this multiple times and it's always awful.
     autoresponders:
       # respond to certain messages with the famous copypasta for comedy
       - &wank
@@ -199,6 +210,31 @@ guilds:
       - alias: moof
         description: Clarus says Moof!
         reply_messages: https://cdn.discordapp.com/attachments/951165912164233256/987160233510047854/The.Dogcow.moof.wav
+      - alias: fax
+        description: Give a quarter, get a quote. Probably not what you want.
+        reply_messages:
+          - |
+            **2022-11-12 10:14 AM PST**
+            <TheCire> Ugh I want to get out of bed but it's so cold...
+            <mysteriouspants> Can't poop in bed unless you're Amber Heard.
+          - |
+            **2020-10-01 7:03 PM EST**
+            <NCarter> What it needs first of all is a pair of spatulas jammed into its underside.
+            <NCarter> I've done this multiple times and it's always awful.
+          - |
+            **2020-04-30 5:38 PM EST**
+            <swillits> Anyone else getting ads for Russian girls, web cam stuff, personal intimacy devices...
+            <OneSadCookie> that's just normal conjugation of the verb
+          - |
+            **2020-04-14 7:30 PM EST**
+            <slembcke> massages cheddar into @mysteriouspants's hair
+          - |
+            **2019-04-19 1:31 PM EST**
+            <NCarter> Hah, my old PowerMac 7300 still works!
+            <NCarter> GraphicConverter says "you've been using this software for 5378 days".
+          - |
+            **2019-02-28 4:52 PM EST**
+            <NCarter> Is there such a thing as cat pants?
     autoresponders:
       - *clarus
       - message_matches: "(?i)(\\b|_)(meep)(\\b|_)"

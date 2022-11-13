@@ -1,11 +1,10 @@
 #!/bin/bash
 
 rust_in_docker() {
-  docker run --rm --name mysteriousbot \
-    -u $(id -u):$(id -g) \
+  podman run --rm --name mysteriousbot \
     -v $(pwd):/src:Z \
     -w /src \
-    rust:1.61.0 \
+    docker.io/library/rust:1.65.0 \
     $@
 }
 
