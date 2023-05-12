@@ -58,6 +58,7 @@ pub struct Counter {
 
 impl Counter {
     /// Gets the counter for a given subject.
+    #[allow(dead_code)]
     pub fn get(&self, subject: UserId) -> Result<u64> {
         self.get_count(self.get_connection()?.deref(), subject)
     }
@@ -78,6 +79,7 @@ impl Counter {
 
     /// Decrements the counter for a given subject, returning the new
     /// value in the counter.
+    #[allow(dead_code)]
     pub fn decrement(&self, subject: UserId) -> Result<u64> {
         let mut connection = self.get_connection()?;
         let tx = connection.transaction().context(DbSnafu)?;
@@ -94,6 +96,7 @@ impl Counter {
     }
 
     /// Sets the counter for a given subject.
+    #[allow(dead_code)]
     pub fn set(&self, subject: UserId, count: u64) -> Result<()> {
         let connection = self.get_connection()?;
         self.set_count(&connection, subject, count)?;

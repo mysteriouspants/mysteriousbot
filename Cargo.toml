@@ -18,12 +18,27 @@ r2d2 = "0"
 r2d2_sqlite = "0"
 rand = "0"
 regex = "1"
-rusqlite = { version = "0", features = [ "chrono" ] }
-serde = { version = "1", features = [ "derive" ] }
+rusqlite = { version = "0", features = ["chrono"] }
+serde = { version = "1", features = ["derive"] }
 serde_regex = "1"
-serde_with = "2"
+serde_with = "3"
 serde_yaml = "0"
-serenity = { version = "0", default-features = false, features = [ "builder", "cache", "client", "gateway", "http", "model", "utils", "rustls_backend", "unstable_discord_api" ] }
+serenity = { version = "0", default-features = false, features = [
+    "builder",
+    "cache",
+    "client",
+    "gateway",
+    "http",
+    "model",
+    "utils",
+    "rustls_backend",
+    "unstable_discord_api",
+] }
 snafu = "0"
-tokio = { version = "1", features = [ "macros", "rt", "rt-multi-thread", "sync" ] }
+tokio = { version = "1", features = [
+    "macros",
+    "rt",
+    "rt-multi-thread",
+    "sync",
+] }
 toml = "0"

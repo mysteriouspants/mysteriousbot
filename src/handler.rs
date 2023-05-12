@@ -1,8 +1,14 @@
 use r2d2::Pool;
 use r2d2_sqlite::SqliteConnectionManager;
-use serenity::{client::{Context, EventHandler}, model::{channel::Message, interactions::{Interaction, application_command::ApplicationCommand}, gateway::Ready}};
+use serenity::{
+    client::{Context, EventHandler},
+    model::{
+        application::command::Command, application::interaction::Interaction, channel::Message,
+        gateway::Ready,
+    },
+};
 
-use crate::{config::Config, emojicache::EmojiCache, counter::CounterFactory};
+use crate::{config::Config, counter::CounterFactory, emojicache::EmojiCache};
 
 pub struct Handler {
     pub config: Config,
@@ -27,7 +33,11 @@ impl EventHandler for Handler {
             None => return, // not a guild we have config for, skip
         };
 
-        if let Some(c) = guild_config.commands.iter().find(|c| c.alias == command.data.name.as_str()) {
+        if let Some(c) = guild_config
+            .commands
+            .iter()
+            .find(|c| c.alias == command.data.name.as_str())
+        {
             c.handle(&command, ctx, &self.counter_factory).await;
         }
     }
@@ -43,15 +53,22 @@ impl EventHandler for Handler {
         };
 
         for autoresponder in &guild_config.autoresponders {
-            autoresponder.handle(&self.emoji_cache, &self.counter_factory, &context, &message, &guild_id).await;
+            autoresponder
+                .handle(
+                    &self.emoji_cache,
+                    &self.counter_factory,
+                    &context,
+                    &message,
+                    &guild_id,
+                )
+                .await;
         }
     }
 
     async fn ready(&self, ctx: Context, ready: Ready) {
         log::info!("{} is connected!", ready.user.name);
 
-        let _ = ApplicationCommand::set_global_application_commands(&ctx.http, |commands| commands)
-            .await;
+        let _ = Command::set_global_application_commands(&ctx.http, |commands| commands).await;
 
         let guilds = ready.guilds.iter().map(|offline_guild| offline_guild.id);
 

@@ -3,7 +3,7 @@ use serde::Deserialize;
 use serde_with::{formats::PreferOne, serde_as, OneOrMany};
 use serenity::{
     client::Context,
-    model::interactions::{
+    model::application::interaction::{
         application_command::ApplicationCommandInteraction, InteractionResponseType,
     },
 };
