@@ -26,23 +26,24 @@ guilds:
         alias: freedom
         description: your freedom-loving meme/video dispener. duplicates expected if you do it too much lol
         reply_messages:
-          - https://www.youtube.com/watch?v=FHe_VHT4ojo
-          - https://www.youtube.com/watch?v=8b5rIFci5vs
-          - https://www.youtube.com/watch?v=QRlqJFdb6ZY
-          - https://www.youtube.com/watch?v=vUFGWDlVh_Y
-          - https://www.youtube.com/watch?v=D7Yp95BCrJ8
-          - https://www.youtube.com/watch?v=d0Xol9ubNGE
-          - https://www.youtube.com/watch?v=-YJy6r-ZKlE
-          - https://www.youtube.com/watch?v=GceP66tJL60
-          - https://www.youtube.com/watch?v=7Lcx8YtOEfU
-          - https://www.youtube.com/watch?v=LNUMTgxYN4Y
-          - https://www.youtube.com/watch?v=2tXu9s9q1DU
-          - https://www.youtube.com/watch?v=BevT42dGYmo
-          - https://www.youtube.com/watch?v=E-7YboIRv1I
-          - https://www.youtube.com/watch?v=RD9qp9eAzPU
-          - https://www.youtube.com/watch?v=XGcADQdlmCk
-          # Ronald Reagan "Evil Empire" speech
-          - https://www.youtube.com/watch?v=do0x-Egc6oA
+          - https://www.youtube.com/watch?v=FHe_VHT4ojo # NATO Doctrine
+          - https://www.youtube.com/watch?v=8b5rIFci5vs # NATOWAVE
+          - https://www.youtube.com/watch?v=QRlqJFdb6ZY # NATOWAVE.mp4
+          - https://www.youtube.com/watch?v=vUFGWDlVh_Y # Exercise NATOWAVE
+          - https://www.youtube.com/watch?v=D7Yp95BCrJ8 # Liberty by Fire NATOWAVE
+          - https://www.youtube.com/watch?v=d0Xol9ubNGE # NATO November
+          - https://www.youtube.com/watch?v=-YJy6r-ZKlE # NATO Imperative NATOWAVE
+          - https://www.youtube.com/watch?v=GceP66tJL60 # The Coldest Conflict NATOWAVE
+          - https://www.youtube.com/watch?v=7Lcx8YtOEfU # War in the Gulf NATOWAVE Edition
+          - https://www.youtube.com/watch?v=LNUMTgxYN4Y # At;amtoc Community NATOWAVE
+          - https://www.youtube.com/watch?v=2tXu9s9q1DU # NATO Little Dark Age
+          - https://www.youtube.com/watch?v=BevT42dGYmo # NATOWAVE
+          - https://www.youtube.com/watch?v=E-7YboIRv1I # NATO/Germany - My Little Nightmare
+          - https://www.youtube.com/watch?v=XGcADQdlmCk # NATOWAVE - Superiority at Sea
+          - https://www.youtube.com/watch?v=MGKnc_YiR-E # The Battle Cry of Freedom
+          - https://www.youtube.com/watch?v=OFtNVEbasOo # Battle Hymn of the Republic
+          - https://www.youtube.com/watch?v=7Os7Z94UYa4 # Over the Hills and Far Away
+          - https://www.youtube.com/watch?v=MmcKPVndlTg # Men of Harlech
           - https://cdn.discordapp.com/attachments/318603903220318210/1008190981432164352/Russia_and_China_take_notes_bvwa7tqblag91.mp4
           - https://cdn.discordapp.com/attachments/808536952571297855/1006107344121381004/unknown.png
           - https://cdn.discordapp.com/attachments/808536952571297855/1004250400158928996/unknown.png
@@ -135,21 +136,31 @@ guilds:
         counter: peeky_ping_count
         only_in_channels: &a0ra_member_channels
           - 792116253954932776 #corp-chat
+          - 1023766622097375322 #krabs-anonymous
+          - 1130486559020425318 #scanning
           - 792696740234395648 #industry
-          - 792116632872419338 #commerce-shopping
+          - 1162101259675898017 #questions
+          - 971051680110116874 #fits
+          - 1159489586481864765 #ministry-of-truth
+
+          - 792116632872419338 #shopping
           - 881323330425212969 #transports-r-us
-          - 917563911790800936 #token-proof
-          - 918485978128187423 #kreep-star
+          - 1006141830519337031 #stim-zone
+
+          - 1130915215593197698 #group-vouch
+          - 1151093814170234880 #the-suggestion-box
+
           - 792112359215726602 #general
+          - 1128024155535720478 #pets
           - 874511358668972093 #shitpost-central
           - 803049246043275294 #games
           - 832285540019077180 #music
-          - 859993967319842847 #food-related
+          - 859993967319842847 #food
           - 878233071546171422 #eve-news
-          - 872020091976433674 #wheres-daddy-today 
-      - user_message: 249051133987913728 # Necrothitude
-        twemojis: _pepetoilet_
-        only_in_channels: 874511358668972093 #shitpost-central
+
+          - 946406061554950164 #real-life-stuff-talk
+          - 1094333510724108288 #vega-bonde-memorial-room-of-weeb
+          - 878665824745947156 #nsfw
       - message_matches: "(?i)\\b(nascar)\\b"
         reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/958491000555323462/Image.gif"
         only_in_channels: *a0ra_member_channels
@@ -193,6 +204,8 @@ guilds:
           - "(?i)\\b(cunt|twat|bugger|wanker|bor+is johnson|arse|arsehole|cuntbag|plonker|prick|bollocks|bint|prat|tosser|pillock|nob|bel+end)\\b"
           # CJ and Killer said these, I had no idea
           - "(?i)\\b(gash|cheffed|pissflaps|shitbag|cocknose|wankstain|arsebadger|jizz|cock|cum|thundercunt|nonce|cumwipe|minger)\\b"
+          # Keef joined our diccord and said this immediately. I'm so sorry.
+          - "(?i)\\b(fagg?ot)\\b"
           # EVE Online/meme words
           - "(?i)\\b(french|france|gallente|dick|dickhead|mittani|goons?|goonswarm)\\b"
         twemojis: getsomehelp
@@ -202,39 +215,6 @@ guilds:
 
   # iDevGames
   488890763720130560:
-    commands:
-      - *wednesday
-      - *friday
-      - *bus
-      - *freedom
-      - alias: moof
-        description: Clarus says Moof!
-        reply_messages: https://cdn.discordapp.com/attachments/951165912164233256/987160233510047854/The.Dogcow.moof.wav
-      - alias: fax
-        description: Give a quarter, get a quote. Probably not what you want.
-        reply_messages:
-          - |
-            **2022-11-12 10:14 AM PST**
-            <TheCire> Ugh I want to get out of bed but it's so cold...
-            <mysteriouspants> Can't poop in bed unless you're Amber Heard.
-          - |
-            **2020-10-01 7:03 PM EST**
-            <NCarter> What it needs first of all is a pair of spatulas jammed into its underside.
-            <NCarter> I've done this multiple times and it's always awful.
-          - |
-            **2020-04-30 5:38 PM EST**
-            <swillits> Anyone else getting ads for Russian girls, web cam stuff, personal intimacy devices...
-            <OneSadCookie> that's just normal conjugation of the verb
-          - |
-            **2020-04-14 7:30 PM EST**
-            <slembcke> massages cheddar into @mysteriouspants's hair
-          - |
-            **2019-04-19 1:31 PM EST**
-            <NCarter> Hah, my old PowerMac 7300 still works!
-            <NCarter> GraphicConverter says "you've been using this software for 5378 days".
-          - |
-            **2019-02-28 4:52 PM EST**
-            <NCarter> Is there such a thing as cat pants?
     autoresponders:
       - *clarus
       - message_matches: "(?i)(\\b|_)(meep)(\\b|_)"
