@@ -1,9 +1,11 @@
 use r2d2::Pool;
 use r2d2_sqlite::SqliteConnectionManager;
 use serenity::{
+    all::CreateCommand,
     client::{Context, EventHandler},
     model::{
-        application::command::Command, application::interaction::Interaction, channel::Message,
+        application::{Command, Interaction},
+        channel::Message,
         gateway::Ready,
     },
 };
@@ -21,14 +23,14 @@ pub struct Handler {
 impl EventHandler for Handler {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         let command = match interaction {
-            Interaction::ApplicationCommand(command) => command,
+            Interaction::Command(command) => command,
             _ => return, // not a something we know how to handle
         };
         let guild_id = match command.guild_id {
             Some(guild_id) => guild_id,
             None => return, // bail from the whole interaction
         };
-        let guild_config = match self.config.guilds.get(&guild_id.0) {
+        let guild_config = match self.config.guilds.get(&guild_id.get()) {
             Some(guild_config) => guild_config,
             None => return, // not a guild we have config for, skip
         };
@@ -47,7 +49,7 @@ impl EventHandler for Handler {
             Some(guild_id) => guild_id,
             None => return, // bail from the whole thing
         };
-        let guild_config = match self.config.guilds.get(&guild_id.0) {
+        let guild_config = match self.config.guilds.get(&guild_id.get()) {
             Some(guild_config) => guild_config,
             None => return, // not a guild we have config for, skip
         };
@@ -68,32 +70,25 @@ impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: Ready) {
         log::info!("{} is connected!", ready.user.name);
 
-        let _ = Command::set_global_application_commands(&ctx.http, |commands| commands).await;
+        let _ = Command::set_global_commands(&ctx.http, vec![]).await;
 
         let guilds = ready.guilds.iter().map(|offline_guild| offline_guild.id);
 
         for guild in guilds {
-            let guild_id = guild.0;
+            let guild_id = guild.get();
             if let Some(guild_config) = self.config.guilds.get(&guild_id) {
                 log::info!("Setting application commands on Guild ID {}", guild_id);
-                let r = guild
-                    .set_application_commands(&ctx.http, |mut commands| {
-                        for command_config in &guild_config.commands {
-                            log::info!(
-                                "Adding command {} to guild {}",
-                                command_config.alias,
-                                guild_id
-                            );
-                            commands = commands.create_application_command(|command| {
-                                command
-                                    .name(&command_config.alias)
-                                    .description(&command_config.description)
-                            });
-                        }
 
-                        commands
+                let commands = guild_config
+                    .commands
+                    .iter()
+                    .map(|command_config| {
+                        CreateCommand::new(&command_config.alias)
+                            .description(&command_config.description)
                     })
-                    .await;
+                    .collect::<Vec<_>>();
+
+                let r = guild.set_commands(&ctx.http, commands).await;
 
                 match r {
                     Ok(_) => log::info!("Application commands for guild {} set", guild_id),

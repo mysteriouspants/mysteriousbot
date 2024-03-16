@@ -16,7 +16,7 @@ pub enum Error {
 /// An LRU Cache which holds the emojis - cached because hitting the
 /// Discord emoji API potentially on every event sounds like a bad time.
 pub struct EmojiCache {
-    cache: SharedCache<ExpiringCache<GuildId, Vec<Emoji>>, GuildId, Vec<Emoji>>,
+    cache: SharedCache<ExpiringCache<u64, Vec<Emoji>>, u64, Vec<Emoji>>,
 }
 
 impl EmojiCache {
@@ -42,11 +42,11 @@ impl EmojiCache {
             .map(Emoji::clone))
     }
     async fn get_emojis(&self, ctx: &Context, guild_id: &GuildId) -> Result<Vec<Emoji>, Error> {
-        if let Some(emojis) = self.cache.get(guild_id) {
+        if let Some(emojis) = self.cache.get(&guild_id.get()) {
             return Ok(emojis);
         } else {
             let emojis = guild_id.emojis(ctx).await.context(DiscordSnafu)?;
-            self.cache.insert(*guild_id, emojis.clone());
+            self.cache.insert(guild_id.get(), emojis.clone());
             return Ok(emojis);
         }
     }

@@ -120,7 +120,7 @@ impl Counter {
                 .context(DbSnafu)?;
             let rows = select
                 .query_map([&self.counter_id], |row| {
-                    Ok((UserId(row.get(0)?), row.get::<_, u64>(1)?))
+                    Ok((UserId::new(row.get(0)?), row.get::<_, u64>(1)?))
                 })
                 .context(DbSnafu)?;
 
@@ -152,7 +152,7 @@ impl Counter {
                 .query_row(
                     "SELECT count FROM counters \
                         WHERE counter = ? AND user_id = ? LIMIT 1;",
-                    params![&self.counter_id, subject.0],
+                    params![&self.counter_id, subject.get()],
                     |row| row.get(0),
                 )
                 .optional()
@@ -172,7 +172,7 @@ impl Counter {
                     VALUES(?, ?, ?) \
                     ON CONFLICT(counter, user_id) \
                     DO UPDATE SET count = excluded.count;",
-                params![&self.counter_id, subject.0, count],
+                params![&self.counter_id, subject.get(), count],
             )
             .context(DbSnafu)?;
 
@@ -204,14 +204,14 @@ mod tests {
         let pool = memory_pool();
         let counter_factory = CounterFactory::new(pool).unwrap();
         let counter = counter_factory.make_counter("my_counter");
-        let joe = UserId(0);
+        let joe = UserId::new(1);
 
         assert!(matches!(counter.get(joe), Ok(0)));
         assert!(matches!(counter.increment(joe), Ok(1)));
         assert!(matches!(counter.decrement(joe), Ok(0)));
         assert!(matches!(counter.increment(joe), Ok(1)));
 
-        let bob = UserId(1);
+        let bob = UserId::new(2);
 
         assert!(matches!(counter.get(bob), Ok(0)));
         assert!(matches!(counter.increment(bob), Ok(1)));

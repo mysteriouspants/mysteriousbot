@@ -2,10 +2,9 @@ use rand::{prelude::SliceRandom, thread_rng};
 use serde::Deserialize;
 use serde_with::{formats::PreferOne, serde_as, OneOrMany};
 use serenity::{
+    all::{CreateEmbed, CreateInteractionResponse, CreateInteractionResponseMessage},
     client::Context,
-    model::application::interaction::{
-        application_command::ApplicationCommandInteraction, InteractionResponseType,
-    },
+    model::application::CommandInteraction,
 };
 
 use crate::counter::{Counter, CounterFactory};
@@ -24,7 +23,7 @@ pub struct Command {
 impl Command {
     pub async fn handle(
         &self,
-        interaction: &ApplicationCommandInteraction,
+        interaction: &CommandInteraction,
         ctx: Context,
         counter_factory: &CounterFactory,
     ) {
@@ -42,7 +41,7 @@ impl Command {
 
 async fn handle_reply_message(
     ctx: &Context,
-    interaction: &ApplicationCommandInteraction,
+    interaction: &CommandInteraction,
     messages: &Vec<String>,
 ) {
     let content = match messages.choose(&mut thread_rng()) {
@@ -53,12 +52,12 @@ async fn handle_reply_message(
         }
     };
 
+    let interaction_response = CreateInteractionResponse::Message(
+        CreateInteractionResponseMessage::new().content(content),
+    );
+
     let r = interaction
-        .create_interaction_response(&ctx.http, |response| {
-            response
-                .kind(InteractionResponseType::ChannelMessageWithSource)
-                .interaction_response_data(|message| message.content(content))
-        })
+        .create_response(&ctx.http, interaction_response)
         .await
         .err();
 
@@ -69,7 +68,7 @@ async fn handle_reply_message(
 
 async fn handle_counter_leaderboard(
     ctx: &Context,
-    interaction: &ApplicationCommandInteraction,
+    interaction: &CommandInteraction,
     counter: &Counter,
 ) {
     let guild_id = match interaction.guild_id {
@@ -115,18 +114,18 @@ async fn handle_counter_leaderboard(
         named_counts.push((nick, count));
     }
 
-    let response_status = interaction
-        .create_interaction_response(ctx, |response| {
-            response
-                .kind(InteractionResponseType::ChannelMessageWithSource)
-                .interaction_response_data(|message| {
-                    for (name, count) in named_counts {
-                        message.embed(|embed| embed.field(name, count.to_string(), false));
-                    }
+    let mut embed = CreateEmbed::new();
 
-                    message
-                })
-        })
+    for (name, count) in named_counts {
+        embed = embed.field(name, count.to_string(), false);
+    }
+
+    let interaction_response = CreateInteractionResponse::Message(
+        CreateInteractionResponseMessage::new().add_embed(embed),
+    );
+
+    let response_status = interaction
+        .create_response(ctx, interaction_response)
         .await
         .err();
 

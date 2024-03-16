@@ -1,10 +1,10 @@
 #!/bin/bash
 
-rust_in_docker() {
-  docker run --rm --name mysteriousbot \
+rust_in_podman() {
+  podman run --rm --name mysteriousbot \
     -v $(pwd):/src:Z \
     -w /src \
-    docker.io/library/rust:1.73.0 \
+    docker.io/library/rust:1.76.0 \
     $@
 }
 
@@ -34,8 +34,8 @@ SERVICE_USER_DIR=/home/mysteriousbot
 SERVICE_NAME=mysteriousbot
 
 if [[ $fast == false ]]; then
-  rust_in_docker cargo test -- --nocapture
-  rust_in_docker cargo build --release
+  rust_in_podman cargo test -- --nocapture
+  rust_in_podman cargo build --release
 fi
 
 # deploy the build if successful

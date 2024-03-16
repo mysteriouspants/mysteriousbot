@@ -3,6 +3,11 @@ guilds:
   # bot testing playground
   728474842877263902:
     commands:
+      - &monday
+        alias: monday
+        description: "it is monday my dudes"
+        reply_messages:
+          - https://cdn.discordapp.com/attachments/874511358668972093/1216806078386540614/It_is_Monday_my_dudes1.mov
       - &wednesday
         alias: wednesday
         description: "it is wednesday my doods"
@@ -35,7 +40,7 @@ guilds:
           - https://www.youtube.com/watch?v=-YJy6r-ZKlE # NATO Imperative NATOWAVE
           - https://www.youtube.com/watch?v=GceP66tJL60 # The Coldest Conflict NATOWAVE
           - https://www.youtube.com/watch?v=7Lcx8YtOEfU # War in the Gulf NATOWAVE Edition
-          - https://www.youtube.com/watch?v=LNUMTgxYN4Y # At;amtoc Community NATOWAVE
+          - https://www.youtube.com/watch?v=LNUMTgxYN4Y # Atlantic Community NATOWAVE
           - https://www.youtube.com/watch?v=2tXu9s9q1DU # NATO Little Dark Age
           - https://www.youtube.com/watch?v=BevT42dGYmo # NATOWAVE
           - https://www.youtube.com/watch?v=E-7YboIRv1I # NATO/Germany - My Little Nightmare
@@ -103,6 +108,7 @@ guilds:
   # RECON/B0T
   499288051290210312:
     commands:
+      - *monday
       - *wednesday
       - *friday
       - *freedom
@@ -116,6 +122,7 @@ guilds:
   # Aurora Dynamics
   792112275473301576:
     commands:
+      - *monday
       - *wednesday
       - *friday
       - *bus
@@ -215,7 +222,11 @@ guilds:
 
   # iDevGames
   488890763720130560:
+    commands:
+      - *monday
+      - *wednesday
+      - *friday
     autoresponders:
       - *clarus
-      - message_matches: "(?i)(\\b|_)(meep)(\\b|_)"
+      - message_matches: "(?i)(\\b|_)(m(\\s+)?e(\\s+)?e(\\s+)?p(s|ing)?)(\\b|_)"
         twemojis: clarus

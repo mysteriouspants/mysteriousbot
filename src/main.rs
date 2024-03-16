@@ -4,7 +4,7 @@ use dotenv::dotenv;
 use emojicache::EmojiCache;
 use r2d2::Pool;
 use r2d2_sqlite::SqliteConnectionManager;
-use serenity::{client::Client, model::gateway::GatewayIntents};
+use serenity::{all::ApplicationId, client::Client, model::gateway::GatewayIntents};
 use std::{env, fs::read_to_string};
 
 mod autoresponder;
@@ -45,7 +45,7 @@ async fn main() {
             | GatewayIntents::GUILD_MESSAGE_REACTIONS
             | GatewayIntents::MESSAGE_CONTENT,
     )
-    .application_id(application_id)
+    .application_id(ApplicationId::new(application_id))
     .event_handler(handler)
     .await
     .expect("Error creating client");

@@ -71,7 +71,7 @@ impl AutoresponderTrigger {
             }
             Self::UserMessage { user_message } => user_message
                 .iter()
-                .any(|user_id| user_id == &message.author.id.0),
+                .any(|user_id| user_id == &message.author.id.get()),
             Self::UserMentioned { user_mentioned } => user_mentioned
                 .iter()
                 .any(|user_id| message.mentions_user_id(*user_id)),
@@ -95,7 +95,8 @@ pub struct AutoresponderFilter {
 impl AutoresponderFilter {
     async fn should_run(&self, message: &Message) -> bool {
         // basic channel filter
-        if self.only_in_channels.len() > 0 && !self.only_in_channels.contains(&message.channel_id.0)
+        if self.only_in_channels.len() > 0
+            && !self.only_in_channels.contains(&message.channel_id.get())
         {
             return false;
         }
@@ -152,7 +153,7 @@ impl AutoresponderAction {
                 log::error!(
                     "Failed to increment counter {:?} for user {} with error {:#?}",
                     counter,
-                    message.author.id.0,
+                    message.author.id.get(),
                     e
                 );
             }

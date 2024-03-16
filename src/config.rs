@@ -19,12 +19,14 @@ pub struct GuildConfig {
 
 #[cfg(test)]
 mod tests {
-    use std::fs::read_to_string;
     use super::Config;
+    use std::fs::read_to_string;
 
     #[test]
     fn can_parse() {
-        let config = serde_yaml::from_str::<Config>(&read_to_string("config/mysteriousbot.yml").expect("no such file"));
+        let config = serde_yaml::from_str::<Config>(
+            &read_to_string("config/mysteriousbot.yml").expect("no such file"),
+        );
         eprintln!("{:#?}", config);
     }
 }
