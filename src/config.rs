@@ -26,7 +26,7 @@ mod tests {
     fn can_parse() {
         let config = serde_yaml::from_str::<Config>(
             &read_to_string("config/mysteriousbot.yml").expect("no such file"),
-        );
+        ).expect("Config is not well-formed");
         eprintln!("{:#?}", config);
     }
 }
