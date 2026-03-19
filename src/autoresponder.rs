@@ -3,7 +3,7 @@ use std::{
     time::{Duration, SystemTime},
 };
 
-use rand::prelude::SliceRandom;
+use rand::{rng, seq::IndexedRandom};
 use regex::Regex;
 use serde::Deserialize;
 use serde_with::{formats::PreferOne, serde_as, DisplayFromStr, DurationSeconds, OneOrMany};
@@ -169,7 +169,7 @@ impl AutoresponderAction {
             }
         }
 
-        let content = { self.reply_messages.choose(&mut rand::thread_rng()) };
+        let content = { self.reply_messages.choose(&mut rng()) };
 
         if let Some(content) = content {
             if let Err(why) = message.reply(context, content).await {

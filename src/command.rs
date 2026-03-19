@@ -1,4 +1,4 @@
-use rand::{prelude::SliceRandom, thread_rng};
+use rand::{rng, seq::IndexedRandom};
 use serde::Deserialize;
 use serde_with::{formats::PreferOne, serde_as, OneOrMany};
 use serenity::{
@@ -44,7 +44,7 @@ async fn handle_reply_message(
     interaction: &CommandInteraction,
     messages: &Vec<String>,
 ) {
-    let content = match messages.choose(&mut thread_rng()) {
+    let content = match messages.choose(&mut rng()) {
         Some(content) => content,
         None => {
             log::error!("No responses configured");

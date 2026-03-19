@@ -68,7 +68,8 @@ guilds:
       - alias: curseboard
         description: do you kiss your mother with that mouth?
         counter_leaderboard: verbal_morality_statute
-      - alias: fax
+      - &fax
+        alias: fax
         description: Give a quarter, get a quote. Probably not what you want.
         reply_messages:
           - |
@@ -83,28 +84,36 @@ guilds:
       # respond to certain messages with the famous copypasta for comedy
       - &wank
         message_matches: "(?i)\\b(wank|cum|masturbate)\\b"
-        reply_messages: "https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4"
+        reply_messages:
+          - https://cdn.discordapp.com/attachments/568671549951836161/962560285732917248/New_Rule.mp4
         cooldown: &thirtyminutes 1800
         counter: test_counter
-      - &clarus 
+      - &clarus
         message_matches: ":clarus:"
-        reply_messages: "Moof!"
+        reply_messages:
+          - Moof!
         cooldown: 300
       - &minecraft
         message_matches: "(?i)\\b(minecraft)\\b"
-        reply_messages: "https://cdn.discordapp.com/attachments/874511358668972093/959864645697536121/Video.mov"
+        reply_messages:
+          - https://cdn.discordapp.com/attachments/874511358668972093/959864645697536121/Video.mov
         cooldown: *thirtyminutes
       - &boats
         message_matches: "(?i)\\b(boats?|ships?)\\b"
-        reply_message:
+        reply_messages:
           - https://cdn.discordapp.com/attachments/951165912164233256/999902514046578719/i_like_boats.mp4
           - https://cdn.discordapp.com/attachments/951165912164233256/999902515141279764/i_like_boats_window_crash.mp4
         cooldown: *thirtyminutes
       - &hair
         message_matches: "(?i)\\b(hair)\\b"
-        reply_message: https://cdn.discordapp.com/attachments/951165912164233256/999902514533126174/quinnypig_is_the_prettiest_pony.mp4
+        reply_messages:
+          - https://cdn.discordapp.com/attachments/951165912164233256/999902514533126174/quinnypig_is_the_prettiest_pony.mp4
         cooldown: *thirtyminutes
-  
+      - message_matches: "(?i)\\b(ai|sam)\\b"
+        reply_messages:
+          - https://cdn.discordapp.com/attachments/951165912164233256/1483687334883885087/Deus_Ex_Truth_Bomb_Compilation_UgkxeWyK1TOPxIDXdFgWqUJdtuyqTc6doW3P.mp4
+        cooldown: 82800 # 23 hours
+
   # RECON/B0T
   499288051290210312:
     commands:
@@ -118,7 +127,7 @@ guilds:
         only_in_channels:
           - 499363186957352970 #alliance
           - 499363309070319616 #nsfw
-            
+
   # Aurora Dynamics
   792112275473301576:
     commands:
@@ -233,8 +242,9 @@ guilds:
       - message_matches: "(?i)(\\b|_)(m(\\s+)?e(\\s+)?e(\\s+)?p(s|ing)?)(\\b|_)"
         twemojis: clarus
       - message_matches: "(?i)\\b(ai|sam)\\b"
-        reply_message: "https://cdn.discordapp.com/attachments/951165912164233256/1483687334883885087/Deus_Ex_Truth_Bomb_Compilation_UgkxeWyK1TOPxIDXdFgWqUJdtuyqTc6doW3P.mp4"
-        cooldown: *thirtyminutes
+        reply_messages:
+          - https://cdn.discordapp.com/attachments/951165912164233256/1483687334883885087/Deus_Ex_Truth_Bomb_Compilation_UgkxeWyK1TOPxIDXdFgWqUJdtuyqTc6doW3P.mp4
+        cooldown: 82800 # 23 hours
         only_in_channels:
-          - 488890763720130562  # general
-          - 488890825774989323  # development
+          - 488890763720130562 # general
+          - 488890825774989323 # development

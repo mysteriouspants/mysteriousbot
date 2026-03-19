@@ -4,7 +4,7 @@ rust_in_podman() {
   podman run --rm --name mysteriousbot \
     -v $(pwd):/src:Z \
     -w /src \
-    docker.io/library/rust:1.76.0 \
+    public.ecr.aws/docker/library/rust:1.94 \
     $@
 }
 

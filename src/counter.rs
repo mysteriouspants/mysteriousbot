@@ -120,7 +120,10 @@ impl Counter {
                 .context(DbSnafu)?;
             let rows = select
                 .query_map([&self.counter_id], |row| {
-                    Ok((UserId::new(row.get(0)?), row.get::<_, u64>(1)?))
+                    Ok((
+                        UserId::new(row.get::<_, i64>(0)? as u64),
+                        row.get::<_, i64>(1)? as u64,
+                    ))
                 })
                 .context(DbSnafu)?;
 
@@ -152,13 +155,13 @@ impl Counter {
                 .query_row(
                     "SELECT count FROM counters \
                         WHERE counter = ? AND user_id = ? LIMIT 1;",
-                    params![&self.counter_id, subject.get()],
-                    |row| row.get(0),
+                    params![&self.counter_id, subject.get() as i64],
+                    |row| row.get::<_, i64>(0),
                 )
                 .optional()
                 .context(DbSnafu)?
             {
-                Some(count) => count,
+                Some(count) => count as u64,
                 None => 0,
             },
         )
@@ -172,7 +175,7 @@ impl Counter {
                     VALUES(?, ?, ?) \
                     ON CONFLICT(counter, user_id) \
                     DO UPDATE SET count = excluded.count;",
-                params![&self.counter_id, subject.get(), count],
+                params![self.counter_id, subject.get() as i64, count as i64],
             )
             .context(DbSnafu)?;
 
