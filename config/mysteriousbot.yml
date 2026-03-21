@@ -244,7 +244,7 @@ guilds:
       - message_matches: "(?i)\\b(ai|sam)\\b"
         reply_messages:
           - https://cdn.discordapp.com/attachments/951165912164233256/1483687334883885087/Deus_Ex_Truth_Bomb_Compilation_UgkxeWyK1TOPxIDXdFgWqUJdtuyqTc6doW3P.mp4
-        cooldown: 82800 # 23 hours
+        cooldown: 604800 # 7 days
         only_in_channels:
           - 488890763720130562 # general
           - 488890825774989323 # development
